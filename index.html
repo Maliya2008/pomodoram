@@ -1,0 +1,2567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoram | Focus Timer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+        }
+
+        :root {
+            --primary: #10B981;
+            --secondary: #3B82F6;
+            --accent: #F59E0B;
+            --focus: #10B981;
+            --break: #3B82F6;
+            --long-break: #8B5CF6;
+            --dark-bg: #0F172A;
+            --dark-card: #1E293B;
+            --light-bg: #F8FAFC;
+            --light-card: #FFFFFF;
+            --nature-bg: linear-gradient(135deg, #065F46, #059669, #10B981);
+            --text-dark: #1E293B;
+            --text-light: #F1F5F9;
+            --text-gray: #64748B;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --trunk-color: #8B4513;
+            --tree-green-1: #2E7D32;
+            --tree-green-2: #388E3C;
+            --tree-green-3: #43A047;
+            --tree-green-4: #4CAF50;
+            --tree-green-5: #66BB6A;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-light);
+            min-height: 100vh;
+            padding: 20px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        body.light-theme {
+            background: var(--light-bg);
+            color: var(--text-dark);
+        }
+
+        body.nature-theme {
+            background: var(--nature-bg);
+            color: var(--text-light);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 40px;
+            padding: 0 10px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 2.2rem;
+        }
+
+        .logo h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .header-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .theme-selector {
+            display: flex;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px;
+            border-radius: 12px;
+        }
+
+        body.light-theme .theme-selector {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .theme-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            border: none;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            transition: var(--transition);
+        }
+
+        body.light-theme .theme-btn {
+            color: var(--text-dark);
+        }
+
+        .theme-btn.active {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .fullscreen-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            border: none;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .fullscreen-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        /* Main Layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 30px;
+        }
+
+        /* Timer Section */
+        .timer-section {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.light-theme .timer-section {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.nature-theme .timer-section {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mode Selector */
+        .mode-selector {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 6px;
+            margin-bottom: 30px;
+        }
+
+        body.light-theme .mode-selector {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .mode-btn {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text-light);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        body.light-theme .mode-btn {
+            color: var(--text-dark);
+        }
+
+        .mode-btn.active {
+            background: white;
+            color: var(--text-dark);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .mode-btn.focus.active { background: var(--focus); color: white; }
+        .mode-btn.break.active { background: var(--break); color: white; }
+        .mode-btn.long-break.active { background: var(--long-break); color: white; }
+
+        /* Timer Display */
+        .timer-display-container {
+            position: relative;
+            width: 360px;
+            height: 360px;
+            margin: 0 auto 40px;
+        }
+
+        .timer-display {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 3px solid var(--focus);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                inset 0 0 40px rgba(0, 0, 0, 0.2),
+                0 20px 50px rgba(0, 0, 0, 0.2);
+            transition: border-color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timer-display.break { border-color: var(--break); }
+        .timer-display.long-break { border-color: var(--long-break); }
+
+        .time {
+            font-size: 4.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            font-variant-numeric: tabular-nums;
+            z-index: 2;
+            position: relative;
+        }
+
+        body.light-theme .time {
+            color: var(--text-dark);
+        }
+
+        .timer-label {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            z-index: 2;
+            position: relative;
+            margin-bottom: 10px;
+        }
+
+        body.light-theme .timer-label {
+            color: var(--text-dark);
+        }
+
+        .session-info {
+            color: var(--text-gray);
+            font-size: 1rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Tree Visualization - FIXED TO GROW UPWARD */
+        .tree-container {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .tree {
+            position: relative;
+            width: 120px;
+            height: 160px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .trunk {
+            width: 12px;
+            height: 40px;
+            background: var(--trunk-color);
+            border-radius: 2px 2px 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Tree layers - FIXED: Grow from bottom up */
+        .tree-layer {
+            position: absolute;
+            background: var(--tree-green-1);
+            border-radius: 50% 50% 0 0;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+
+        .tree-layer.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Layer 1 is the BOTTOM (largest) */
+        .tree-layer-1 {
+            width: 160px;
+            height: 50px;
+            bottom: 40px; /* Position above trunk */
+            background: var(--tree-green-1);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Layer 2 goes on top of layer 1 (slightly smaller) */
+        .tree-layer-2 {
+            width: 140px;
+            height: 45px;
+            bottom: 85px; /* Position above layer 1 */
+            background: var(--tree-green-2);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Layer 3 goes on top of layer 2 */
+        .tree-layer-3 {
+            width: 120px;
+            height: 40px;
+            bottom: 125px; /* Position above layer 2 */
+            background: var(--tree-green-3);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Layer 4 goes on top of layer 3 */
+        .tree-layer-4 {
+            width: 100px;
+            height: 35px;
+            bottom: 160px; /* Position above layer 3 */
+            background: var(--tree-green-4);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Layer 5 is the TOP (smallest) */
+        .tree-layer-5 {
+            width: 80px;
+            height: 30px;
+            bottom: 190px; /* Position above layer 4 */
+            background: var(--tree-green-5);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Tree top (pointy tip) */
+        .tree-top {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 15px solid var(--tree-green-5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 3;
+        }
+
+        .tree-top.active {
+            opacity: 1;
+            transform: translateY(0);
+            bottom: 220px; /* Position above the top layer */
+        }
+
+        /* Progress Ring */
+        .progress-ring {
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            width: calc(100% + 6px);
+            height: calc(100% + 6px);
+            transform: rotate(-90deg);
+        }
+
+        .progress-ring circle {
+            fill: transparent;
+            stroke-width: 3;
+            stroke-linecap: round;
+        }
+
+        .progress-ring-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .progress-ring-fill {
+            stroke: var(--primary);
+            stroke-dasharray: 1130;
+            stroke-dashoffset: 1130;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        /* Controls */
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .control-btn {
+            padding: 16px 32px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .control-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .control-btn:active {
+            transform: translateY(0);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, var(--primary), #34D399);
+            color: white;
+        }
+
+        .pause-btn {
+            background: linear-gradient(135deg, var(--secondary), #60A5FA);
+            color: white;
+        }
+
+        .skip-btn {
+            background: linear-gradient(135deg, var(--accent), #FBBF24);
+            color: white;
+        }
+
+        .control-btn:disabled {
+            background: var(--text-gray);
+            cursor: not-allowed;
+            transform: none !important;
+            opacity: 0.5;
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        body.light-theme .stat-card {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .stat-card:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            line-height: 1;
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Panels */
+        .panel {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.light-theme .panel {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.nature-theme .panel {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .panel-title {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        body.light-theme .panel-title {
+            color: var(--text-dark);
+        }
+
+        .panel-title i {
+            color: var(--primary);
+        }
+
+        /* Settings */
+        .setting {
+            margin-bottom: 24px;
+        }
+
+        .setting label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: 600;
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+
+        body.light-theme .setting label {
+            color: var(--text-dark);
+        }
+
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.1);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        body.light-theme .slider-container input[type="range"] {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .slider-container input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .value-display {
+            min-width: 40px;
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.2rem;
+        }
+
+        .auto-apply {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .auto-apply {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .auto-apply input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--primary);
+        }
+
+        .auto-apply label {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        body.light-theme .auto-apply label {
+            color: var(--text-dark);
+        }
+
+        /* Tasks */
+        .task-input-container {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+
+        .task-input {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-size: 1rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        body.light-theme .task-input {
+            background: white;
+            border-color: #E2E8F0;
+            color: var(--text-dark);
+        }
+
+        .task-input:focus {
+            border-color: var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .task-input:focus {
+            background: white;
+        }
+
+        .add-task-btn {
+            padding: 0 20px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), #34D399);
+            color: white;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .add-task-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .tasks-list {
+            list-style: none;
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .tasks-list::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .tasks-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 3px;
+        }
+
+        .tasks-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 3px;
+        }
+
+        .task-item {
+            display: flex;
+            align-items: center;
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary);
+        }
+
+        body.light-theme .task-item {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .task-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .task-item.completed {
+            opacity: 0.7;
+            border-left-color: var(--secondary);
+        }
+
+        .task-checkbox {
+            width: 20px;
+            height: 20px;
+            margin-right: 16px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .task-text {
+            flex: 1;
+            color: var(--text-light);
+            font-size: 1rem;
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+            transition: var(--transition);
+            word-break: break-word;
+            min-height: 24px;
+            outline: none;
+        }
+
+        body.light-theme .task-text {
+            color: var(--text-dark);
+        }
+
+        .task-text.completed {
+            text-decoration: line-through;
+            color: var(--text-gray);
+        }
+
+        .task-text:focus {
+            outline: 2px solid var(--primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .task-text:focus {
+            background: white;
+        }
+
+        .task-actions {
+            display: flex;
+            gap: 8px;
+            opacity: 0;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .task-item:hover .task-actions {
+            opacity: 1;
+        }
+
+        .task-action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: var(--text-gray);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .task-action-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--primary);
+        }
+
+        body.light-theme .task-action-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        /* Pomodoro Counter */
+        .pomodoro-counter {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .pomodoro-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .pomodoro-dot.completed {
+            background: var(--primary);
+            transform: scale(1.2);
+        }
+
+        .pomodoro-dot.current {
+            background: var(--secondary);
+            animation: pulse-dot 2s infinite;
+        }
+
+        @keyframes pulse-dot {
+            0% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7); }
+            70% { box-shadow: 0 0 0 6px rgba(59, 130, 246, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            text-align: center;
+            margin-top: 20px;
+            color: var(--text-light);
+        }
+
+        body.light-theme .progress-indicator {
+            color: var(--text-dark);
+        }
+
+        .time-progress {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        /* ========== FIXED FULLSCREEN MODE ========== */
+        /* This will be a separate overlay that appears on top */
+        #fullscreen-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: var(--dark-bg);
+            z-index: 9999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        #fullscreen-overlay.active {
+            display: flex;
+        }
+
+        #fullscreen-overlay.light-theme {
+            background: var(--light-bg);
+        }
+
+        #fullscreen-overlay.nature-theme {
+            background: var(--nature-bg);
+        }
+
+        .fullscreen-timer-container {
+            position: relative;
+            width: 500px;
+            height: 500px;
+            margin-bottom: 40px;
+        }
+
+        .fullscreen-timer-display {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(145deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+            border: 4px solid var(--focus);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 
+                inset 0 0 60px rgba(0, 0, 0, 0.3),
+                0 25px 60px rgba(0, 0, 0, 0.3);
+            transition: border-color 0.5s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .fullscreen-timer-display.break { border-color: var(--break); }
+        .fullscreen-timer-display.long-break { border-color: var(--long-break); }
+
+        .fullscreen-time {
+            font-size: 6.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 15px;
+            font-variant-numeric: tabular-nums;
+            z-index: 2;
+            position: relative;
+        }
+
+        .fullscreen-timer-label {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            z-index: 2;
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .fullscreen-session-info {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            z-index: 2;
+            position: relative;
+        }
+
+        /* Fullscreen Tree - FIXED */
+        .fullscreen-tree-container {
+            position: absolute;
+            width: 280px;
+            height: 280px;
+            bottom: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .fullscreen-tree {
+            position: relative;
+            width: 160px;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .fullscreen-trunk {
+            width: 16px;
+            height: 50px;
+            background: var(--trunk-color);
+            border-radius: 2px 2px 0 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .fullscreen-tree-layer {
+            position: absolute;
+            background: var(--tree-green-1);
+            border-radius: 50% 50% 0 0;
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+        }
+
+        .fullscreen-tree-layer.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        /* Fullscreen tree layers - FIXED: Grow from bottom up */
+        .fullscreen-tree-layer-1 {
+            width: 230px;
+            height: 60px;
+            bottom: 50px;
+            background: var(--tree-green-1);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-tree-layer-2 {
+            width: 200px;
+            height: 55px;
+            bottom: 105px;
+            background: var(--tree-green-2);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-tree-layer-3 {
+            width: 170px;
+            height: 50px;
+            bottom: 155px;
+            background: var(--tree-green-3);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-tree-layer-4 {
+            width: 140px;
+            height: 45px;
+            bottom: 200px;
+            background: var(--tree-green-4);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-tree-layer-5 {
+            width: 110px;
+            height: 40px;
+            bottom: 240px;
+            background: var(--tree-green-5);
+            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-tree-top {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 20px solid var(--tree-green-5);
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 3;
+        }
+
+        .fullscreen-tree-top.active {
+            opacity: 1;
+            transform: translateY(0);
+            bottom: 280px;
+        }
+
+        .fullscreen-progress-ring {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: calc(100% + 8px);
+            height: calc(100% + 8px);
+            transform: rotate(-90deg);
+        }
+
+        .fullscreen-progress-ring circle {
+            fill: transparent;
+            stroke-width: 4;
+            stroke-linecap: round;
+        }
+
+        .fullscreen-progress-ring-bg {
+            stroke: rgba(255, 255, 255, 0.1);
+        }
+
+        .fullscreen-progress-ring-fill {
+            stroke: var(--primary);
+            stroke-dasharray: 1570;
+            stroke-dashoffset: 1570;
+            transition: stroke-dashoffset 1s linear;
+        }
+
+        .fullscreen-controls {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+
+        .fullscreen-control-btn {
+            padding: 18px 36px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .fullscreen-control-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .fullscreen-progress-indicator {
+            text-align: center;
+            color: var(--text-light);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-top: 20px;
+        }
+
+        body.light-theme .fullscreen-progress-indicator {
+            color: var(--text-dark);
+        }
+
+        .fullscreen-pomodoro-counter {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .fullscreen-pomodoro-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: var(--transition);
+        }
+
+        .fullscreen-pomodoro-dot.completed {
+            background: var(--primary);
+            transform: scale(1.3);
+        }
+
+        .fullscreen-pomodoro-dot.current {
+            background: var(--secondary);
+            animation: pulse-dot 2s infinite;
+        }
+
+        /* Fullscreen Notification */
+        .fullscreen-notification {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            font-size: 0.95rem;
+            font-weight: 600;
+            z-index: 10000;
+            transform: translateY(-100%);
+            transition: transform 0.5s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .fullscreen-notification.show {
+            transform: translateY(0);
+        }
+
+        /* Tree Growth Indicator */
+        .tree-growth-info {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            display: none;
+        }
+
+        .tree-growth-info.show {
+            display: block;
+        }
+
+        .tree-growth-progress {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .tree-growth-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--tree-green-1), var(--tree-green-5));
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+
+        .reset-tree-btn {
+            margin-top: 10px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 8px;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .reset-tree-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .hotkeys {
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .key {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 3px 8px;
+            border-radius: 4px;
+            margin: 0 2px;
+            font-family: 'SF Mono', Monaco, monospace;
+            font-size: 0.85rem;
+        }
+
+        body.light-theme .key {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .timer-display-container {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .time {
+                font-size: 4rem;
+            }
+            
+            .tree-container {
+                width: 180px;
+                height: 180px;
+            }
+
+            .fullscreen-timer-container {
+                width: 400px;
+                height: 400px;
+            }
+            
+            .fullscreen-time {
+                font-size: 5.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            header {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .timer-display-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .time {
+                font-size: 3.5rem;
+            }
+            
+            .timer-label {
+                font-size: 1.2rem;
+            }
+            
+            .timer-controls {
+                flex-wrap: wrap;
+            }
+            
+            .control-btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .panel {
+                padding: 24px;
+            }
+            
+            /* Fullscreen mobile adjustments */
+            .fullscreen-timer-container {
+                width: 320px;
+                height: 320px;
+            }
+            
+            .fullscreen-time {
+                font-size: 4.5rem;
+            }
+            
+            .fullscreen-timer-label {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timer-display-container {
+                width: 240px;
+                height: 240px;
+            }
+            
+            .time {
+                font-size: 3rem;
+            }
+            
+            .control-btn {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .stats-grid {
+                gap: 12px;
+            }
+            
+            .stat-card {
+                padding: 20px;
+            }
+            
+            .stat-value {
+                font-size: 2rem;
+            }
+            
+            /* Fullscreen mobile adjustments */
+            .fullscreen-timer-container {
+                width: 280px;
+                height: 280px;
+            }
+            
+            .fullscreen-time {
+                font-size: 4rem;
+            }
+            
+            .fullscreen-control-btn {
+                padding: 14px 24px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="dark-theme">
+    <!-- Fullscreen Notification -->
+    <div class="fullscreen-notification" id="fullscreen-notification">
+        <i class="fas fa-expand"></i>
+        <span>Press ESC to exit fullscreen</span>
+    </div>
+
+    <!-- Fullscreen Overlay (Separate from main content) -->
+    <div id="fullscreen-overlay" class="dark-theme">
+        <div class="fullscreen-timer-container">
+            <div class="fullscreen-timer-display" id="fullscreen-timer-display">
+                <!-- Progress Ring -->
+                <svg class="fullscreen-progress-ring" viewBox="0 0 508 508">
+                    <circle class="fullscreen-progress-ring-bg" cx="254" cy="254" r="250"></circle>
+                    <circle class="fullscreen-progress-ring-fill" cx="254" cy="254" r="250"></circle>
+                </svg>
+
+                <!-- Tree Visualization -->
+                <div class="fullscreen-tree-container">
+                    <div class="fullscreen-tree" id="fullscreen-tree">
+                        <div class="fullscreen-trunk" id="fullscreen-trunk"></div>
+                    </div>
+                </div>
+
+                <!-- Time Display -->
+                <div class="fullscreen-time" id="fullscreen-time-display">25:00</div>
+                <div class="fullscreen-timer-label" id="fullscreen-timer-label">Focus Time</div>
+                <div class="fullscreen-session-info" id="fullscreen-session-info">Session 1 of 4</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="fullscreen-controls">
+            <button class="fullscreen-control-btn start-btn" id="fullscreen-start-btn">
+                <i class="fas fa-play"></i> Start
+            </button>
+            <button class="fullscreen-control-btn pause-btn" id="fullscreen-pause-btn" disabled>
+                <i class="fas fa-pause"></i> Pause
+            </button>
+            <button class="fullscreen-control-btn skip-btn" id="fullscreen-skip-btn">
+                <i class="fas fa-forward"></i> Skip
+            </button>
+        </div>
+
+        <!-- Progress Indicator -->
+        <div class="fullscreen-progress-indicator" id="fullscreen-progress-indicator">
+            Progress: <span id="fullscreen-progress-text">0%</span>
+        </div>
+
+        <!-- Pomodoro Counter -->
+        <div class="fullscreen-pomodoro-counter" id="fullscreen-pomodoro-counter"></div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <div class="logo">
+                <i class="fas fa-hourglass-half"></i>
+                <h1>Pomodoram</h1>
+            </div>
+            <div class="header-controls">
+                <div class="theme-selector">
+                    <button class="theme-btn dark active" data-theme="dark" title="Dark Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="theme-btn light" data-theme="light" title="Light Theme">
+                        <i class="fas fa-sun"></i>
+                    </button>
+                    <button class="theme-btn nature" data-theme="nature" title="Nature Theme">
+                        <i class="fas fa-leaf"></i>
+                    </button>
+                </div>
+                <button class="fullscreen-btn" id="fullscreen-btn" title="Toggle Fullscreen">
+                    <i class="fas fa-expand"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-grid">
+            <!-- Timer Section -->
+            <main class="timer-section">
+                <!-- Mode Selector -->
+                <div class="mode-selector">
+                    <button class="mode-btn focus active" data-mode="focus">Focus</button>
+                    <button class="mode-btn break" data-mode="break">Break</button>
+                    <button class="mode-btn long-break" data-mode="longBreak">Long Break</button>
+                </div>
+
+                <!-- Timer Display -->
+                <div class="timer-display-container">
+                    <div class="timer-display" id="timer-display">
+                        <!-- Progress Ring -->
+                        <svg class="progress-ring" viewBox="0 0 366 366">
+                            <circle class="progress-ring-bg" cx="183" cy="183" r="180"></circle>
+                            <circle class="progress-ring-fill" cx="183" cy="183" r="180"></circle>
+                        </svg>
+
+                        <!-- Tree Visualization -->
+                        <div class="tree-container">
+                            <div class="tree" id="tree">
+                                <div class="trunk" id="trunk"></div>
+                            </div>
+                        </div>
+
+                        <!-- Time Display -->
+                        <div class="time" id="time-display">25:00</div>
+                        <div class="timer-label" id="timer-label">Focus Time</div>
+                        <div class="session-info" id="session-info">Session 1 of 4</div>
+                    </div>
+                </div>
+
+                <!-- Pomodoro Counter -->
+                <div class="pomodoro-counter" id="pomodoro-counter"></div>
+
+                <!-- Timer Controls -->
+                <div class="timer-controls">
+                    <button class="control-btn start-btn" id="start-btn">
+                        <i class="fas fa-play"></i> Start
+                    </button>
+                    <button class="control-btn pause-btn" id="pause-btn" disabled>
+                        <i class="fas fa-pause"></i> Pause
+                    </button>
+                    <button class="control-btn skip-btn" id="skip-btn">
+                        <i class="fas fa-forward"></i> Skip
+                    </button>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-indicator" id="progress-indicator">
+                    <div class="time-progress" id="time-progress">Progress: 0%</div>
+                </div>
+
+                <!-- Tree Growth Info -->
+                <div class="tree-growth-info" id="tree-growth-info">
+                    <div>Tree Growth: <span id="tree-growth-text">0/5</span></div>
+                    <div class="tree-growth-progress">
+                        <div class="tree-growth-progress-bar" id="tree-growth-bar" style="width: 0%"></div>
+                    </div>
+                    <button class="reset-tree-btn" id="reset-tree-btn">Reset Tree</button>
+                </div>
+
+                <!-- Statistics -->
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-value" id="completed-pomodoros">0</div>
+                        <div class="stat-label">Pomodoros</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="focus-time-today">0m</div>
+                        <div class="stat-label">Focus Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="break-time-today">0m</div>
+                        <div class="stat-label">Break Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="tasks-completed">0</div>
+                        <div class="stat-label">Tasks Done</div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Sidebar -->
+            <div class="sidebar">
+                <!-- Settings Panel -->
+                <div class="panel settings-panel">
+                    <h2 class="panel-title"><i class="fas fa-cog"></i> Timer Settings</h2>
+                    
+                    <div class="setting">
+                        <label>Focus Time: <span id="focus-value" class="value-display">25</span> min</label>
+                        <div class="slider-container">
+                            <input type="range" id="focus-time" min="5" max="60" value="25" step="5">
+                        </div>
+                    </div>
+
+                    <div class="setting">
+                        <label>Break Time: <span id="break-value" class="value-display">5</span> min</label>
+                        <div class="slider-container">
+                            <input type="range" id="break-time" min="1" max="30" value="5" step="1">
+                        </div>
+                    </div>
+
+                    <div class="setting">
+                        <label>Long Break: <span id="long-break-value" class="value-display">15</span> min</label>
+                        <div class="slider-container">
+                            <input type="range" id="long-break-time" min="5" max="45" value="15" step="5">
+                        </div>
+                    </div>
+
+                    <div class="setting">
+                        <label>Sessions Until Long Break: <span id="sessions-value" class="value-display">4</span></label>
+                        <div class="slider-container">
+                            <input type="range" id="sessions-count" min="2" max="8" value="4" step="1">
+                        </div>
+                    </div>
+
+                    <div class="auto-apply">
+                        <input type="checkbox" id="auto-apply" checked>
+                        <label for="auto-apply">Apply changes immediately</label>
+                    </div>
+                </div>
+
+                <!-- Tasks Panel -->
+                <div class="panel tasks-panel">
+                    <h2 class="panel-title"><i class="fas fa-tasks"></i> Task List</h2>
+                    
+                    <div class="task-input-container">
+                        <input type="text" class="task-input" id="task-input" placeholder="Add a new task...">
+                        <button class="add-task-btn" id="add-task-btn">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+
+                    <ul class="tasks-list" id="tasks-list"></ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>Pomodoram &copy; 2023 | Focus Timer based on the Pomodoro Technique</p>
+            <div class="hotkeys">
+                <span class="key">Space</span> Start/Pause •
+                <span class="key">S</span> Skip •
+                <span class="key">F</span> Fullscreen •
+                <span class="key">R</span> Reset •
+                <span class="key">ESC</span> Exit Fullscreen
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        // ==================== GLOBAL VARIABLES ====================
+        let timer = null;
+        let isRunning = false;
+        let timeLeft = 0;
+        let currentMode = 'focus';
+        let pomodoroCount = 0;
+        let totalPomodoros = 0;
+        let focusTimeToday = 0;
+        let breakTimeToday = 0;
+        let tasksCompleted = 0;
+        let treeStage = 0; // Tracks tree growth (0-5)
+        let isFullscreen = false;
+        let completedFocusSessions = 0; // Track completed focus sessions for tree growth
+        
+        // Timer settings
+        let focusTime = 25 * 60;
+        let breakTime = 5 * 60;
+        let longBreakTime = 15 * 60;
+        let sessionsUntilLongBreak = 4;
+        
+        // DOM Elements - Main View
+        const timeDisplay = document.getElementById('time-display');
+        const timerLabel = document.getElementById('timer-label');
+        const sessionInfo = document.getElementById('session-info');
+        const timerDisplay = document.getElementById('timer-display');
+        const startBtn = document.getElementById('start-btn');
+        const pauseBtn = document.getElementById('pause-btn');
+        const skipBtn = document.getElementById('skip-btn');
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const fullscreenNotification = document.getElementById('fullscreen-notification');
+        const modeButtons = document.querySelectorAll('.mode-btn');
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const pomodoroCounter = document.getElementById('pomodoro-counter');
+        const progressRingFill = document.querySelector('.progress-ring-fill');
+        const timeProgress = document.getElementById('time-progress');
+        const treeGrowthInfo = document.getElementById('tree-growth-info');
+        const treeGrowthText = document.getElementById('tree-growth-text');
+        const treeGrowthBar = document.getElementById('tree-growth-bar');
+        const resetTreeBtn = document.getElementById('reset-tree-btn');
+        
+        // DOM Elements - Fullscreen View
+        const fullscreenOverlay = document.getElementById('fullscreen-overlay');
+        const fullscreenTimeDisplay = document.getElementById('fullscreen-time-display');
+        const fullscreenTimerLabel = document.getElementById('fullscreen-timer-label');
+        const fullscreenSessionInfo = document.getElementById('fullscreen-session-info');
+        const fullscreenTimerDisplay = document.getElementById('fullscreen-timer-display');
+        const fullscreenStartBtn = document.getElementById('fullscreen-start-btn');
+        const fullscreenPauseBtn = document.getElementById('fullscreen-pause-btn');
+        const fullscreenSkipBtn = document.getElementById('fullscreen-skip-btn');
+        const fullscreenProgressIndicator = document.getElementById('fullscreen-progress-indicator');
+        const fullscreenProgressText = document.getElementById('fullscreen-progress-text');
+        const fullscreenPomodoroCounter = document.getElementById('fullscreen-pomodoro-counter');
+        const fullscreenProgressRingFill = document.querySelector('.fullscreen-progress-ring-fill');
+        
+        // Tree elements
+        const tree = document.getElementById('tree');
+        const trunk = document.getElementById('trunk');
+        const fullscreenTree = document.getElementById('fullscreen-tree');
+        const fullscreenTrunk = document.getElementById('fullscreen-trunk');
+        
+        // Settings elements
+        const focusTimeInput = document.getElementById('focus-time');
+        const breakTimeInput = document.getElementById('break-time');
+        const longBreakTimeInput = document.getElementById('long-break-time');
+        const sessionsCountInput = document.getElementById('sessions-count');
+        const focusValue = document.getElementById('focus-value');
+        const breakValue = document.getElementById('break-value');
+        const longBreakValue = document.getElementById('long-break-value');
+        const sessionsValue = document.getElementById('sessions-value');
+        const autoApplyCheckbox = document.getElementById('auto-apply');
+        
+        // Stats elements
+        const completedPomodorosEl = document.getElementById('completed-pomodoros');
+        const focusTimeTodayEl = document.getElementById('focus-time-today');
+        const breakTimeTodayEl = document.getElementById('break-time-today');
+        const tasksCompletedEl = document.getElementById('tasks-completed');
+        
+        // Task elements
+        const taskInput = document.getElementById('task-input');
+        const addTaskBtn = document.getElementById('add-task-btn');
+        const tasksList = document.getElementById('tasks-list');
+        
+        // ==================== INITIALIZATION ====================
+        function init() {
+            loadFromLocalStorage();
+            timeLeft = getCurrentModeDuration();
+            updateDisplay();
+            updateFullscreenDisplay();
+            updateTree();
+            updateFullscreenTree();
+            updatePomodoroCounter();
+            updateFullscreenPomodoroCounter();
+            updateSessionInfo();
+            updateStats();
+            renderTasks();
+            setupEventListeners();
+            updateSettingsDisplay();
+            updateTreeGrowthDisplay();
+            
+            // Show tree growth info if tree has any growth
+            if (treeStage > 0) {
+                treeGrowthInfo.classList.add('show');
+            }
+        }
+        
+        // ==================== EVENT LISTENERS ====================
+        function setupEventListeners() {
+            // Main timer controls
+            startBtn.addEventListener('click', toggleTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            skipBtn.addEventListener('click', skipSession);
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            
+            // Fullscreen timer controls
+            fullscreenStartBtn.addEventListener('click', toggleTimer);
+            fullscreenPauseBtn.addEventListener('click', pauseTimer);
+            fullscreenSkipBtn.addEventListener('click', skipSession);
+            
+            // Mode selection
+            modeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (!isRunning) {
+                        modeButtons.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        currentMode = btn.dataset.mode;
+                        resetTimer();
+                    }
+                });
+            });
+            
+            // Theme selection
+            themeButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const theme = btn.dataset.theme;
+                    setTheme(theme);
+                    themeButtons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                });
+            });
+            
+            // Settings changes
+            focusTimeInput.addEventListener('input', updateSettings);
+            breakTimeInput.addEventListener('input', updateSettings);
+            longBreakTimeInput.addEventListener('input', updateSettings);
+            sessionsCountInput.addEventListener('input', updateSettings);
+            
+            // Task management
+            addTaskBtn.addEventListener('click', addTask);
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addTask();
+            });
+            
+            // Reset tree button
+            resetTreeBtn.addEventListener('click', resetTree);
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboardShortcut);
+        }
+        
+        // ==================== TIMER FUNCTIONS ====================
+        function toggleTimer() {
+            if (isRunning) {
+                pauseTimer();
+            } else {
+                startTimer();
+            }
+        }
+        
+        function startTimer() {
+            if (timeLeft === 0) {
+                timeLeft = getCurrentModeDuration();
+            }
+            
+            isRunning = true;
+            
+            // Update main view buttons
+            startBtn.disabled = true;
+            pauseBtn.disabled = false;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Running';
+            
+            // Update fullscreen view buttons
+            fullscreenStartBtn.disabled = true;
+            fullscreenPauseBtn.disabled = false;
+            fullscreenStartBtn.innerHTML = '<i class="fas fa-play"></i> Running';
+            
+            timer = setInterval(() => {
+                timeLeft--;
+                updateDisplay();
+                updateFullscreenDisplay();
+                
+                if (currentMode === 'focus') {
+                    focusTimeToday++;
+                } else {
+                    breakTimeToday++;
+                }
+                
+                updateStats();
+                
+                if (timeLeft <= 0) {
+                    completeSession();
+                }
+            }, 1000);
+        }
+        
+        function pauseTimer() {
+            clearInterval(timer);
+            isRunning = false;
+            
+            // Update main view buttons
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+            
+            // Update fullscreen view buttons
+            fullscreenStartBtn.disabled = false;
+            fullscreenPauseBtn.disabled = true;
+            fullscreenStartBtn.innerHTML = '<i class="fas fa-play"></i> Resume';
+        }
+        
+        function skipSession() {
+            if (isRunning) pauseTimer();
+            completeSession();
+        }
+        
+        function completeSession() {
+            clearInterval(timer);
+            isRunning = false;
+            
+            // Update main view buttons
+            startBtn.disabled = false;
+            pauseBtn.disabled = true;
+            startBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+            
+            // Update fullscreen view buttons
+            fullscreenStartBtn.disabled = false;
+            fullscreenPauseBtn.disabled = true;
+            fullscreenStartBtn.innerHTML = '<i class="fas fa-play"></i> Start';
+            
+            playNotificationSound();
+            showNotification();
+            
+            if (currentMode === 'focus') {
+                totalPomodoros++;
+                pomodoroCount++;
+                completedFocusSessions++;
+                
+                // GROW TREE - Grow after every focus session
+                if (completedFocusSessions % 2 === 0 && treeStage < 5) {
+                    treeStage++;
+                    updateTree();
+                    updateFullscreenTree();
+                    updateTreeGrowthDisplay();
+                    
+                    // Show tree growth info
+                    treeGrowthInfo.classList.add('show');
+                    
+                    // Show celebration when tree is fully grown
+                    if (treeStage === 5) {
+                        showTreeCompleteNotification();
+                    }
+                }
+                
+                if (pomodoroCount >= sessionsUntilLongBreak) {
+                    pomodoroCount = 0;
+                    currentMode = 'longBreak';
+                } else {
+                    currentMode = 'break';
+                }
+            } else {
+                currentMode = 'focus';
+            }
+            
+            // Update active mode button
+            modeButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.mode === currentMode) {
+                    btn.classList.add('active');
+                }
+            });
+            
+            resetTimer();
+            saveToLocalStorage();
+        }
+        
+        function resetTimer() {
+            timeLeft = getCurrentModeDuration();
+            updateDisplay();
+            updateFullscreenDisplay();
+            updatePomodoroCounter();
+            updateFullscreenPomodoroCounter();
+            updateSessionInfo();
+        }
+        
+        function getCurrentModeDuration() {
+            switch(currentMode) {
+                case 'focus': return focusTime;
+                case 'break': return breakTime;
+                case 'longBreak': return longBreakTime;
+                default: return focusTime;
+            }
+        }
+        
+        // ==================== DISPLAY FUNCTIONS ====================
+        function updateDisplay() {
+            // Update time display
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            timeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update timer label
+            const labels = {
+                'focus': 'Focus Time',
+                'break': 'Break Time',
+                'longBreak': 'Long Break'
+            };
+            timerLabel.textContent = labels[currentMode];
+            
+            // Update timer border color
+            timerDisplay.className = 'timer-display';
+            timerDisplay.classList.add(currentMode);
+            
+            // Update progress ring
+            const totalDuration = getCurrentModeDuration();
+            const progress = ((totalDuration - timeLeft) / totalDuration) * 1130;
+            progressRingFill.style.strokeDashoffset = 1130 - progress;
+            
+            // Update progress ring color
+            const progressColor = getModeColor(currentMode);
+            progressRingFill.style.stroke = progressColor;
+            
+            // Update progress text
+            const progressPercent = Math.round(((totalDuration - timeLeft) / totalDuration) * 100);
+            timeProgress.textContent = `Progress: ${progressPercent}%`;
+            timeProgress.style.color = progressColor;
+        }
+        
+        function updateFullscreenDisplay() {
+            // Update time display
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+            fullscreenTimeDisplay.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            
+            // Update timer label
+            const labels = {
+                'focus': 'Focus Time',
+                'break': 'Break Time',
+                'longBreak': 'Long Break'
+            };
+            fullscreenTimerLabel.textContent = labels[currentMode];
+            
+            // Update timer border color
+            fullscreenTimerDisplay.className = 'fullscreen-timer-display';
+            fullscreenTimerDisplay.classList.add(currentMode);
+            
+            // Update progress ring
+            const totalDuration = getCurrentModeDuration();
+            const progress = ((totalDuration - timeLeft) / totalDuration) * 1570;
+            fullscreenProgressRingFill.style.strokeDashoffset = 1570 - progress;
+            
+            // Update progress ring color
+            const progressColor = getModeColor(currentMode);
+            fullscreenProgressRingFill.style.stroke = progressColor;
+            
+            // Update progress text
+            const progressPercent = Math.round(((totalDuration - timeLeft) / totalDuration) * 100);
+            fullscreenProgressText.textContent = `${progressPercent}%`;
+            fullscreenProgressIndicator.style.color = progressColor;
+            
+            // Update session info
+            fullscreenSessionInfo.textContent = `Session ${pomodoroCount + 1} of ${sessionsUntilLongBreak}`;
+        }
+        
+        function getModeColor(mode) {
+            switch(mode) {
+                case 'focus': return '#10B981';
+                case 'break': return '#3B82F6';
+                case 'longBreak': return '#8B5CF6';
+                default: return '#10B981';
+            }
+        }
+        
+        // ==================== TREE FUNCTIONS ====================
+        function updateTree() {
+            // Clear existing tree layers and top
+            const existingLayers = tree.querySelectorAll('.tree-layer');
+            existingLayers.forEach(layer => layer.remove());
+            
+            const existingTop = tree.querySelector('.tree-top');
+            if (existingTop) existingTop.remove();
+            
+            // Add tree layers based on tree stage
+            for (let i = 1; i <= treeStage; i++) {
+                const layer = document.createElement('div');
+                layer.className = `tree-layer tree-layer-${i}`;
+                tree.appendChild(layer);
+                
+                // Animate layer appearance
+                setTimeout(() => {
+                    layer.classList.add('active');
+                }, i * 200);
+            }
+            
+            // Add tree top if tree has at least 3 layers (looks better)
+            if (treeStage >= 3) {
+                const treeTop = document.createElement('div');
+                treeTop.className = 'tree-top';
+                tree.appendChild(treeTop);
+                
+                setTimeout(() => {
+                    treeTop.classList.add('active');
+                }, 300);
+            }
+        }
+        
+        function updateFullscreenTree() {
+            // Clear existing tree layers and top
+            const existingLayers = fullscreenTree.querySelectorAll('.fullscreen-tree-layer');
+            existingLayers.forEach(layer => layer.remove());
+            
+            const existingTop = fullscreenTree.querySelector('.fullscreen-tree-top');
+            if (existingTop) existingTop.remove();
+            
+            // Add tree layers based on tree stage
+            for (let i = 1; i <= treeStage; i++) {
+                const layer = document.createElement('div');
+                layer.className = `fullscreen-tree-layer fullscreen-tree-layer-${i}`;
+                fullscreenTree.appendChild(layer);
+                
+                // Animate layer appearance
+                setTimeout(() => {
+                    layer.classList.add('active');
+                }, i * 200);
+            }
+            
+            // Add tree top if tree has at least 3 layers
+            if (treeStage >= 3) {
+                const treeTop = document.createElement('div');
+                treeTop.className = 'fullscreen-tree-top';
+                fullscreenTree.appendChild(treeTop);
+                
+                setTimeout(() => {
+                    treeTop.classList.add('active');
+                }, 300);
+            }
+        }
+        
+        function updateTreeGrowthDisplay() {
+            treeGrowthText.textContent = `${treeStage}/5`;
+            treeGrowthBar.style.width = `${(treeStage / 5) * 100}%`;
+        }
+        
+        function resetTree() {
+            treeStage = 0;
+            completedFocusSessions = 0;
+            updateTree();
+            updateFullscreenTree();
+            updateTreeGrowthDisplay();
+            treeGrowthInfo.classList.remove('show');
+            saveToLocalStorage();
+        }
+        
+        // ==================== POMODORO COUNTER ====================
+        function updatePomodoroCounter() {
+            pomodoroCounter.innerHTML = '';
+            
+            for (let i = 0; i < sessionsUntilLongBreak; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'pomodoro-dot';
+                
+                if (i < pomodoroCount) {
+                    dot.classList.add('completed');
+                } else if (i === pomodoroCount && currentMode === 'focus') {
+                    dot.classList.add('current');
+                }
+                
+                pomodoroCounter.appendChild(dot);
+            }
+        }
+        
+        function updateFullscreenPomodoroCounter() {
+            fullscreenPomodoroCounter.innerHTML = '';
+            
+            for (let i = 0; i < sessionsUntilLongBreak; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'fullscreen-pomodoro-dot';
+                
+                if (i < pomodoroCount) {
+                    dot.classList.add('completed');
+                } else if (i === pomodoroCount && currentMode === 'focus') {
+                    dot.classList.add('current');
+                }
+                
+                fullscreenPomodoroCounter.appendChild(dot);
+            }
+        }
+        
+        function updateSessionInfo() {
+            sessionInfo.textContent = `Session ${pomodoroCount + 1} of ${sessionsUntilLongBreak}`;
+        }
+        
+        // ==================== SETTINGS FUNCTIONS ====================
+        function updateSettings() {
+            // Update displayed values
+            focusValue.textContent = focusTimeInput.value;
+            breakValue.textContent = breakTimeInput.value;
+            longBreakValue.textContent = longBreakTimeInput.value;
+            sessionsValue.textContent = sessionsCountInput.value;
+            
+            // Update timer settings
+            focusTime = parseInt(focusTimeInput.value) * 60;
+            breakTime = parseInt(breakTimeInput.value) * 60;
+            longBreakTime = parseInt(longBreakTimeInput.value) * 60;
+            sessionsUntilLongBreak = parseInt(sessionsCountInput.value);
+            
+            // Apply changes if auto-apply is enabled or timer is not running
+            if (autoApplyCheckbox.checked || !isRunning) {
+                resetTimer();
+            }
+            
+            updatePomodoroCounter();
+            updateFullscreenPomodoroCounter();
+            saveToLocalStorage();
+        }
+        
+        function updateSettingsDisplay() {
+            focusTimeInput.value = focusTime / 60;
+            breakTimeInput.value = breakTime / 60;
+            longBreakTimeInput.value = longBreakTime / 60;
+            sessionsCountInput.value = sessionsUntilLongBreak;
+            
+            focusValue.textContent = focusTime / 60;
+            breakValue.textContent = breakTime / 60;
+            longBreakValue.textContent = longBreakTime / 60;
+            sessionsValue.textContent = sessionsUntilLongBreak;
+        }
+        
+        // ==================== FULLSCREEN FUNCTIONS ====================
+        function toggleFullscreen() {
+            if (isFullscreen) {
+                exitFullscreen();
+            } else {
+                enterFullscreen();
+            }
+        }
+        
+        function enterFullscreen() {
+            isFullscreen = true;
+            
+            // Show fullscreen overlay
+            fullscreenOverlay.classList.add('active');
+            fullscreenOverlay.className = 'active ' + document.body.className;
+            
+            // Update fullscreen display
+            updateFullscreenDisplay();
+            
+            // Show notification
+            fullscreenNotification.classList.add('show');
+            setTimeout(() => {
+                fullscreenNotification.classList.remove('show');
+            }, 3000);
+            
+            saveToLocalStorage();
+        }
+        
+        function exitFullscreen() {
+            isFullscreen = false;
+            
+            // Hide fullscreen overlay
+            fullscreenOverlay.classList.remove('active');
+            
+            saveToLocalStorage();
+        }
+        
+        // ==================== THEME FUNCTIONS ====================
+        function setTheme(theme) {
+            document.body.className = `${theme}-theme`;
+            if (isFullscreen) {
+                fullscreenOverlay.className = `active ${theme}-theme`;
+            }
+            saveToLocalStorage();
+        }
+        
+        // ==================== STATS FUNCTIONS ====================
+        function updateStats() {
+            completedPomodorosEl.textContent = totalPomodoros;
+            focusTimeTodayEl.textContent = `${Math.floor(focusTimeToday / 60)}m`;
+            breakTimeTodayEl.textContent = `${Math.floor(breakTimeToday / 60)}m`;
+            tasksCompletedEl.textContent = tasksCompleted;
+        }
+        
+        // ==================== TASK FUNCTIONS ====================
+        function addTask() {
+            const text = taskInput.value.trim();
+            if (!text) return;
+            
+            const task = {
+                id: Date.now(),
+                text: text,
+                completed: false,
+                createdAt: new Date().toISOString()
+            };
+            
+            saveTask(task);
+            renderTasks();
+            taskInput.value = '';
+            taskInput.focus();
+        }
+        
+        function saveTask(task) {
+            const tasks = getTasks();
+            tasks.push(task);
+            localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
+        }
+        
+        function getTasks() {
+            const tasksJson = localStorage.getItem('pomodoram_tasks');
+            return tasksJson ? JSON.parse(tasksJson) : [];
+        }
+        
+        function renderTasks() {
+            const tasks = getTasks();
+            tasksList.innerHTML = '';
+            
+            if (tasks.length === 0) {
+                tasksList.innerHTML = '<div style="text-align: center; padding: 20px; color: var(--text-gray);">No tasks yet. Add one above!</div>';
+                return;
+            }
+            
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = `task-item ${task.completed ? 'completed' : ''}`;
+                li.dataset.id = task.id;
+                
+                li.innerHTML = `
+                    <input type="checkbox" class="task-checkbox" ${task.completed ? 'checked' : ''}>
+                    <span class="task-text ${task.completed ? 'completed' : ''}" contenteditable="true">${task.text}</span>
+                    <div class="task-actions">
+                        <button class="task-action-btn edit-btn" title="Edit task">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="task-action-btn delete-btn" title="Delete task">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                tasksList.appendChild(li);
+            });
+            
+            // Add event listeners to tasks
+            setupTaskEventListeners();
+        }
+        
+        function setupTaskEventListeners() {
+            // Checkbox event listeners
+            document.querySelectorAll('.task-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', handleTaskComplete);
+            });
+            
+            // Edit button event listeners
+            document.querySelectorAll('.edit-btn').forEach(btn => {
+                btn.addEventListener('click', handleTaskEdit);
+            });
+            
+            // Delete button event listeners
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', handleTaskDelete);
+            });
+            
+            // Make task text editable on click
+            document.querySelectorAll('.task-text').forEach(taskText => {
+                taskText.addEventListener('click', function() {
+                    this.focus();
+                });
+                
+                taskText.addEventListener('blur', function() {
+                    handleTaskTextEdit(this);
+                });
+                
+                taskText.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        this.blur();
+                    }
+                });
+            });
+        }
+        
+        function handleTaskComplete(e) {
+            const taskId = parseInt(e.target.closest('.task-item').dataset.id);
+            const completed = e.target.checked;
+            
+            const tasks = getTasks();
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            
+            if (taskIndex !== -1) {
+                tasks[taskIndex].completed = completed;
+                localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
+                
+                if (completed) {
+                    tasksCompleted++;
+                } else {
+                    tasksCompleted--;
+                }
+                
+                updateStats();
+                e.target.closest('.task-item').classList.toggle('completed');
+                e.target.nextElementSibling.classList.toggle('completed');
+                saveToLocalStorage();
+            }
+        }
+        
+        function handleTaskEdit(e) {
+            const taskId = parseInt(e.target.closest('.task-item').dataset.id);
+            const tasks = getTasks();
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            
+            if (taskIndex === -1) return;
+            
+            const taskTextElement = e.target.closest('.task-item').querySelector('.task-text');
+            taskTextElement.focus();
+            
+            // Select all text for easy editing
+            const range = document.createRange();
+            range.selectNodeContents(taskTextElement);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+        }
+        
+        function handleTaskTextEdit(taskTextElement) {
+            const taskId = parseInt(taskTextElement.closest('.task-item').dataset.id);
+            const newText = taskTextElement.textContent.trim();
+            
+            if (!newText) {
+                // If text is empty, delete the task
+                handleTaskDelete({ target: { closest: () => taskTextElement.closest('.task-item') } });
+                return;
+            }
+            
+            const tasks = getTasks();
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            
+            if (taskIndex !== -1) {
+                tasks[taskIndex].text = newText;
+                localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
+                saveToLocalStorage();
+            }
+        }
+        
+        function handleTaskDelete(e) {
+            const taskItem = e.target.closest('.task-item');
+            const taskId = parseInt(taskItem.dataset.id);
+            
+            const tasks = getTasks();
+            const taskIndex = tasks.findIndex(task => task.id === taskId);
+            
+            if (taskIndex === -1) return;
+            
+            // Update tasks completed count if the task was completed
+            if (tasks[taskIndex].completed) {
+                tasksCompleted--;
+                updateStats();
+            }
+            
+            tasks.splice(taskIndex, 1);
+            localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
+            renderTasks();
+            saveToLocalStorage();
+        }
+        
+        // ==================== NOTIFICATION FUNCTIONS ====================
+        function showNotification() {
+            let message = '';
+            
+            if (currentMode === 'focus') {
+                message = pomodoroCount >= sessionsUntilLongBreak - 1 ? 
+                         'Great work! Time for a long break.' : 
+                         'Focus session complete! Take a short break.';
+            } else if (currentMode === 'break') {
+                message = 'Break is over! Time to focus.';
+            } else {
+                message = 'Long break finished! Ready for more focused work?';
+            }
+            
+            const notification = document.createElement('div');
+            notification.className = 'fullscreen-notification show';
+            notification.innerHTML = `<i class="fas fa-bell"></i><span>${message}</span>`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+        
+        function showTreeCompleteNotification() {
+            const notification = document.createElement('div');
+            notification.className = 'fullscreen-notification show';
+            notification.style.background = 'linear-gradient(135deg, #F59E0B, #FBBF24)';
+            notification.innerHTML = `<i class="fas fa-tree"></i><span>🌳 Beautiful! Your spruce tree is fully grown! 🌳</span>`;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+        
+        function playNotificationSound() {
+            try {
+                // Create a simple beep sound using Web Audio API
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 1);
+            } catch (e) {
+                // Audio not supported, silently fail
+            }
+        }
+        
+        // ==================== KEYBOARD SHORTCUTS ====================
+        function handleKeyboardShortcut(e) {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            
+            switch(e.key) {
+                case ' ':
+                case 'Spacebar':
+                    e.preventDefault();
+                    toggleTimer();
+                    break;
+                case 's':
+                case 'S':
+                    e.preventDefault();
+                    skipSession();
+                    break;
+                case 'f':
+                case 'F':
+                    e.preventDefault();
+                    toggleFullscreen();
+                    break;
+                case 'r':
+                case 'R':
+                    e.preventDefault();
+                    resetTimer();
+                    break;
+                case 'Escape':
+                    if (isFullscreen) {
+                        exitFullscreen();
+                    }
+                    break;
+            }
+        }
+        
+        // ==================== LOCAL STORAGE ====================
+        function saveToLocalStorage() {
+            const data = {
+                totalPomodoros,
+                focusTimeToday,
+                breakTimeToday,
+                tasksCompleted,
+                pomodoroCount,
+                treeStage,
+                completedFocusSessions,
+                currentMode,
+                focusTime,
+                breakTime,
+                longBreakTime,
+                sessionsUntilLongBreak,
+                autoApply: autoApplyCheckbox.checked,
+                theme: document.body.className,
+                isFullscreen: isFullscreen,
+                lastSave: new Date().toISOString()
+            };
+            
+            localStorage.setItem('pomodoram_data', JSON.stringify(data));
+        }
+        
+        function loadFromLocalStorage() {
+            const dataJson = localStorage.getItem('pomodoram_data');
+            
+            if (dataJson) {
+                const data = JSON.parse(dataJson);
+                
+                totalPomodoros = data.totalPomodoros || 0;
+                focusTimeToday = data.focusTimeToday || 0;
+                breakTimeToday = data.breakTimeToday || 0;
+                tasksCompleted = data.tasksCompleted || 0;
+                pomodoroCount = data.pomodoroCount || 0;
+                treeStage = data.treeStage || 0;
+                completedFocusSessions = data.completedFocusSessions || 0;
+                currentMode = data.currentMode || 'focus';
+                
+                // Load timer settings
+                if (data.focusTime) focusTime = data.focusTime;
+                if (data.breakTime) breakTime = data.breakTime;
+                if (data.longBreakTime) longBreakTime = data.longBreakTime;
+                if (data.sessionsUntilLongBreak) sessionsUntilLongBreak = data.sessionsUntilLongBreak;
+                
+                // Load settings
+                if (data.autoApply !== undefined) {
+                    autoApplyCheckbox.checked = data.autoApply;
+                }
+                
+                // Load theme
+                if (data.theme) {
+                    document.body.className = data.theme;
+                    themeButtons.forEach(btn => {
+                        btn.classList.remove('active');
+                        if (btn.dataset.theme === data.theme.replace('-theme', '')) {
+                            btn.classList.add('active');
+                        }
+                    });
+                }
+                
+                // Load fullscreen state
+                if (data.isFullscreen) {
+                    setTimeout(() => {
+                        enterFullscreen();
+                    }, 100);
+                }
+                
+                // Load tasks
+                const tasksJson = localStorage.getItem('pomodoram_tasks');
+                if (tasksJson) {
+                    const tasks = JSON.parse(tasksJson);
+                    tasksCompleted = tasks.filter(task => task.completed).length;
+                }
+            } else {
+                // Default values
+                timeLeft = focusTime;
+            }
+        }
+        
+        // ==================== INITIALIZE ====================
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
