@@ -3,7 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pomodoram | Focus Timer</title>
+    <meta name="description" content="Pomodoram - A free Pomodoro focus timer with task management, study music, and visual tree growth. Boost productivity with the Pomodoro Technique.">
+    <meta name="keywords" content="pomodoro, focus timer, productivity, time management, study music, task list, pomodoro technique, pomodoram">
+    <meta name="author" content="Pomodoram">
+    <meta property="og:title" content="Pomodoram | Free Pomodoro Focus Timer with Study Music">
+    <meta property="og:description" content="Boost your productivity with Pomodoram. A free Pomodoro timer featuring study music, task management, and beautiful tree growth visualization.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://pomodoram.online">
+    <meta name="twitter:card" content="summary_large_image">
+    <title>Pomodoram | Free Pomodoro Focus Timer with Study Music & Task Management</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -44,7 +52,6 @@
             min-height: 100vh;
             padding: 20px;
             transition: var(--transition);
-            position: relative;
         }
 
         body.light-theme {
@@ -57,7 +64,6 @@
             color: var(--text-light);
         }
 
-        /* Container */
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -71,6 +77,8 @@
             align-items: center;
             margin-bottom: 40px;
             padding: 0 10px;
+            flex-wrap: wrap;
+            gap: 20px;
         }
 
         .logo {
@@ -97,6 +105,7 @@
             display: flex;
             gap: 15px;
             align-items: center;
+            flex-wrap: wrap;
         }
 
         .theme-selector {
@@ -164,6 +173,12 @@
             gap: 30px;
         }
 
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Timer Section */
         .timer-section {
             background: rgba(30, 41, 59, 0.8);
@@ -172,6 +187,8 @@
             padding: 40px;
             box-shadow: var(--shadow);
             transition: var(--transition);
+            display: flex;
+            flex-direction: column;
         }
 
         body.light-theme .timer-section {
@@ -228,6 +245,21 @@
             width: 360px;
             height: 360px;
             margin: 0 auto 40px;
+            flex-shrink: 0;
+        }
+
+        @media (max-width: 768px) {
+            .timer-display-container {
+                width: 300px;
+                height: 300px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timer-display-container {
+                width: 260px;
+                height: 260px;
+            }
         }
 
         .timer-display {
@@ -246,6 +278,7 @@
             transition: border-color 0.5s ease;
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
         .timer-display.break { border-color: var(--break); }
@@ -263,6 +296,18 @@
 
         body.light-theme .time {
             color: var(--text-dark);
+        }
+
+        @media (max-width: 768px) {
+            .time {
+                font-size: 3.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .time {
+                font-size: 3rem;
+            }
         }
 
         .timer-label {
@@ -287,48 +332,83 @@
             position: relative;
         }
 
-        /* Tree Visualization - FIXED TO GROW UPWARD */
+        /* Tree Visualization - More realistic */
         .tree-container {
             position: absolute;
-            width: 200px;
-            height: 200px;
-            bottom: 40px;
+            width: 220px;
+            height: 220px;
+            bottom: 50px;
             left: 50%;
             transform: translateX(-50%);
             display: flex;
             align-items: flex-end;
             justify-content: center;
             z-index: 1;
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .tree-container {
+                width: 180px;
+                height: 180px;
+                bottom: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tree-container {
+                width: 160px;
+                height: 160px;
+                bottom: 30px;
+            }
         }
 
         .tree {
             position: relative;
-            width: 120px;
-            height: 160px;
+            width: 140px;
+            height: 180px;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-end;
         }
 
+        /* Realistic trunk with texture */
         .trunk {
-            width: 12px;
-            height: 40px;
+            width: 16px;
+            height: 50px;
             background: var(--trunk-color);
-            border-radius: 2px 2px 0 0;
+            border-radius: 4px;
             position: relative;
             z-index: 1;
+            box-shadow: 
+                inset 2px 0 0 rgba(255, 255, 255, 0.1),
+                inset -2px 0 0 rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Tree layers - FIXED: Grow from bottom up */
+        .trunk:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 4px;
+            right: 4px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 2px;
+        }
+
+        /* Realistic tree layers with gradients */
         .tree-layer {
             position: absolute;
-            background: var(--tree-green-1);
-            border-radius: 50% 50% 0 0;
+            border-radius: 50% 50% 40% 40%;
             opacity: 0;
             transform: scale(0);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 2;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .tree-layer.active {
@@ -336,69 +416,65 @@
             transform: scale(1);
         }
 
-        /* Layer 1 is the BOTTOM (largest) */
         .tree-layer-1 {
             width: 160px;
-            height: 50px;
-            bottom: 40px; /* Position above trunk */
-            background: var(--tree-green-1);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            height: 60px;
+            bottom: 50px;
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-1), #1B5E20);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
 
-        /* Layer 2 goes on top of layer 1 (slightly smaller) */
         .tree-layer-2 {
             width: 140px;
-            height: 45px;
-            bottom: 85px; /* Position above layer 1 */
-            background: var(--tree-green-2);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            height: 55px;
+            bottom: 100px;
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-2), #2E7D32);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
         }
 
-        /* Layer 3 goes on top of layer 2 */
         .tree-layer-3 {
             width: 120px;
-            height: 40px;
-            bottom: 125px; /* Position above layer 2 */
-            background: var(--tree-green-3);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            height: 50px;
+            bottom: 145px;
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-3), #388E3C);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         }
 
-        /* Layer 4 goes on top of layer 3 */
         .tree-layer-4 {
             width: 100px;
-            height: 35px;
-            bottom: 160px; /* Position above layer 3 */
-            background: var(--tree-green-4);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            height: 45px;
+            bottom: 185px;
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-4), #43A047);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
         }
 
-        /* Layer 5 is the TOP (smallest) */
         .tree-layer-5 {
             width: 80px;
-            height: 30px;
-            bottom: 190px; /* Position above layer 4 */
-            background: var(--tree-green-5);
-            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.2);
+            height: 40px;
+            bottom: 220px;
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-5), #4CAF50);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
-        /* Tree top (pointy tip) */
+        /* Realistic tree top */
         .tree-top {
             position: absolute;
             width: 0;
             height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 15px solid var(--tree-green-5);
+            border-left: 12px solid transparent;
+            border-right: 12px solid transparent;
+            border-bottom: 20px solid #2E7D32;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 3;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
 
         .tree-top.active {
             opacity: 1;
             transform: translateY(0);
-            bottom: 220px; /* Position above the top layer */
+            bottom: 260px;
         }
 
         /* Progress Ring */
@@ -409,6 +485,7 @@
             width: calc(100% + 6px);
             height: calc(100% + 6px);
             transform: rotate(-90deg);
+            z-index: 2;
         }
 
         .progress-ring circle {
@@ -428,12 +505,13 @@
             transition: stroke-dashoffset 1s linear;
         }
 
-        /* Controls */
+        /* Timer Controls */
         .timer-controls {
             display: flex;
             justify-content: center;
             gap: 20px;
             margin-bottom: 40px;
+            flex-wrap: wrap;
         }
 
         .control-btn {
@@ -481,19 +559,36 @@
             opacity: 0.5;
         }
 
-        /* Stats */
-        .stats-grid {
+        /* Stats and Tasks Grid */
+        .stats-tasks-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 20px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .stats-tasks-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
         }
 
         .stat-card {
             background: rgba(255, 255, 255, 0.05);
             border-radius: 16px;
-            padding: 24px;
+            padding: 20px;
             text-align: center;
             transition: var(--transition);
+            min-height: 120px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
         body.light-theme .stat-card {
@@ -523,6 +618,130 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             font-weight: 600;
+        }
+
+        /* Tasks in Timer Section */
+        .tasks-preview {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            transition: var(--transition);
+        }
+
+        body.light-theme .tasks-preview {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .tasks-preview:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .tasks-preview:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .tasks-preview-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        body.light-theme .tasks-preview-title {
+            color: var(--text-dark);
+        }
+
+        .tasks-preview-list {
+            list-style: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .tasks-preview-list::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .tasks-preview-list::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+
+        .tasks-preview-list::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 2px;
+        }
+
+        .task-preview-item {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+        }
+
+        body.light-theme .task-preview-item {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .task-preview-item:last-child {
+            border-bottom: none;
+        }
+
+        .task-preview-item:hover {
+            transform: translateX(5px);
+        }
+
+        .task-preview-checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            accent-color: var(--primary);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .task-preview-text {
+            flex: 1;
+            color: var(--text-light);
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        body.light-theme .task-preview-text {
+            color: var(--text-dark);
+        }
+
+        .task-preview-text.completed {
+            text-decoration: line-through;
+            color: var(--text-gray);
+        }
+
+        .view-all-tasks {
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .view-all-btn {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-all-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
         }
 
         /* Sidebar */
@@ -649,7 +868,311 @@
             color: var(--text-dark);
         }
 
-        /* Tasks */
+        /* Alarm Sound Selector */
+        .alarm-selector {
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.light-theme .alarm-selector {
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .alarm-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .alarm-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 12px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            background: transparent;
+            color: var(--text-light);
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        body.light-theme .alarm-btn {
+            color: var(--text-dark);
+            border-color: rgba(0, 0, 0, 0.1);
+        }
+
+        .alarm-btn:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .alarm-btn.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* Music Panel - UPDATED */
+        .music-panel {
+            background: rgba(30, 41, 59, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 24px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        body.light-theme .music-panel {
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        body.nature-theme .music-panel {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .music-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .mood-suggestion {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            font-style: italic;
+            text-align: right;
+            max-width: 60%;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+        }
+
+        .music-btn {
+            flex: 1;
+            min-width: 120px;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        body.light-theme .music-btn {
+            background: rgba(0, 0, 0, 0.05);
+            color: var(--text-dark);
+        }
+
+        .music-btn:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .music-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .music-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* Android Style Volume Slider - Desktop Only */
+        .volume-container {
+            margin: 25px 0;
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .volume-container {
+                display: none; /* Hide on mobile */
+            }
+        }
+
+        .volume-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        body.light-theme .volume-label {
+            color: var(--text-dark);
+        }
+
+        .android-volume-slider {
+            -webkit-appearance: slider-vertical;
+            width: 40px;
+            height: 120px;
+            background: transparent;
+            outline: none;
+            margin: 0 auto;
+            display: block;
+            cursor: pointer;
+        }
+
+        .android-volume-slider::-webkit-slider-runnable-track {
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to top, var(--primary), #E2E8F0);
+            border-radius: 3px;
+            margin: 0 auto;
+        }
+
+        .android-volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            margin-left: -9px;
+        }
+
+        .android-volume-slider::-moz-range-track {
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to top, var(--primary), #E2E8F0);
+            border-radius: 3px;
+        }
+
+        .android-volume-slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+
+        /* Mobile Volume Control (Simplified) */
+        .mobile-volume-control {
+            display: none;
+            margin: 15px 0;
+        }
+
+        @media (max-width: 768px) {
+            .mobile-volume-control {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+            
+            .mobile-volume-slider {
+                flex: 1;
+                height: 6px;
+                border-radius: 3px;
+                background: rgba(255, 255, 255, 0.1);
+                outline: none;
+                -webkit-appearance: none;
+            }
+            
+            .mobile-volume-slider::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: var(--primary);
+                cursor: pointer;
+            }
+        }
+
+        /* Track Selection */
+        .track-selector {
+            margin-top: 20px;
+        }
+
+        .track-item {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        body.light-theme .track-item {
+            background: rgba(0, 0, 0, 0.03);
+        }
+
+        .track-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-2px);
+        }
+
+        body.light-theme .track-item:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .track-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .track-item.playing {
+            animation: pulse-glow 2s infinite;
+        }
+
+        @keyframes pulse-glow {
+            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+        }
+
+        .track-info {
+            flex: 1;
+        }
+
+        .track-title {
+            font-weight: 600;
+            margin-bottom: 4px;
+            font-size: 1rem;
+        }
+
+        .track-mood {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        .track-item.active .track-mood {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .track-icon {
+            font-size: 1.2rem;
+            width: 30px;
+            text-align: center;
+        }
+
+        /* Tasks Panel in Sidebar */
         .task-input-container {
             display: flex;
             gap: 12px;
@@ -828,7 +1351,8 @@
             display: flex;
             justify-content: center;
             gap: 10px;
-            margin-top: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
 
         .pomodoro-dot {
@@ -855,11 +1379,10 @@
             100% { box-shadow: 0 0 0 0 rgba(59, 130, 246, 0); }
         }
 
-        /* Progress Indicator - FIXED with proper spacing */
+        /* Progress Indicator */
         .progress-indicator {
             text-align: center;
-            margin-top: 20px;
-            margin-bottom: 50px; /* Increased for proper spacing */
+            margin: 20px 0;
             color: var(--text-light);
         }
 
@@ -873,8 +1396,7 @@
             margin-top: 10px;
         }
 
-        /* ========== FIXED FULLSCREEN MODE ========== */
-        /* This will be a separate overlay that appears on top */
+        /* Fullscreen Overlay */
         #fullscreen-overlay {
             display: none;
             position: fixed;
@@ -887,7 +1409,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px;
+            padding: 20px;
         }
 
         #fullscreen-overlay.active {
@@ -902,10 +1424,41 @@
             background: var(--nature-bg);
         }
 
+        /* Fullscreen Exit Button - Square like enter button */
+        .fullscreen-exit-btn {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            z-index: 10001;
+            box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+            transition: var(--transition);
+        }
+
+        .fullscreen-exit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+        }
+
+        #fullscreen-overlay.active .fullscreen-exit-btn {
+            display: flex;
+        }
+
+        /* Fullscreen Timer */
         .fullscreen-timer-container {
             position: relative;
-            width: 500px;
-            height: 500px;
+            width: min(500px, 90vw);
+            height: min(500px, 90vw);
             margin-bottom: 40px;
         }
 
@@ -925,13 +1478,14 @@
             transition: border-color 0.5s ease;
             position: relative;
             overflow: hidden;
+            z-index: 1;
         }
 
         .fullscreen-timer-display.break { border-color: var(--break); }
         .fullscreen-timer-display.long-break { border-color: var(--long-break); }
 
         .fullscreen-time {
-            font-size: 6.5rem;
+            font-size: min(6.5rem, 15vw);
             font-weight: 800;
             color: var(--text-light);
             margin-bottom: 15px;
@@ -941,7 +1495,7 @@
         }
 
         .fullscreen-timer-label {
-            font-size: 2.2rem;
+            font-size: min(2.2rem, 5vw);
             font-weight: 600;
             color: var(--text-light);
             text-transform: uppercase;
@@ -958,11 +1512,11 @@
             position: relative;
         }
 
-        /* Fullscreen Tree - FIXED */
+        /* Fullscreen Tree - Fixed to not cross circle */
         .fullscreen-tree-container {
             position: absolute;
-            width: 280px;
-            height: 280px;
+            width: min(280px, 60vw);
+            height: min(280px, 60vw);
             bottom: 60px;
             left: 50%;
             transform: translateX(-50%);
@@ -970,12 +1524,13 @@
             align-items: flex-end;
             justify-content: center;
             z-index: 1;
+            pointer-events: none;
         }
 
         .fullscreen-tree {
             position: relative;
-            width: 160px;
-            height: 220px;
+            width: min(160px, 35vw);
+            height: min(220px, 48vw);
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -983,22 +1538,28 @@
         }
 
         .fullscreen-trunk {
-            width: 16px;
-            height: 50px;
+            width: min(16px, 3.5vw);
+            height: min(50px, 11vw);
             background: var(--trunk-color);
-            border-radius: 2px 2px 0 0;
+            border-radius: 4px;
             position: relative;
             z-index: 1;
+            box-shadow: 
+                inset 2px 0 0 rgba(255, 255, 255, 0.1),
+                inset -2px 0 0 rgba(0, 0, 0, 0.3),
+                0 2px 4px rgba(0, 0, 0, 0.2);
         }
 
         .fullscreen-tree-layer {
             position: absolute;
-            background: var(--tree-green-1);
-            border-radius: 50% 50% 0 0;
+            border-radius: 50% 50% 40% 40%;
             opacity: 0;
             transform: scale(0);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 2;
+            box-shadow: 
+                inset 0 0 20px rgba(0, 0, 0, 0.3),
+                0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         .fullscreen-tree-layer.active {
@@ -1006,64 +1567,64 @@
             transform: scale(1);
         }
 
-        /* Fullscreen tree layers - FIXED: Grow from bottom up */
         .fullscreen-tree-layer-1 {
-            width: 230px;
-            height: 60px;
-            bottom: 50px;
-            background: var(--tree-green-1);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+            width: min(230px, 50vw);
+            height: min(60px, 13vw);
+            bottom: min(50px, 11vw);
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-1), #1B5E20);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
         }
 
         .fullscreen-tree-layer-2 {
-            width: 200px;
-            height: 55px;
-            bottom: 105px;
-            background: var(--tree-green-2);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+            width: min(200px, 44vw);
+            height: min(55px, 12vw);
+            bottom: min(105px, 23vw);
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-2), #2E7D32);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
         }
 
         .fullscreen-tree-layer-3 {
-            width: 170px;
-            height: 50px;
-            bottom: 155px;
-            background: var(--tree-green-3);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+            width: min(170px, 37vw);
+            height: min(50px, 11vw);
+            bottom: min(155px, 34vw);
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-3), #388E3C);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
         }
 
         .fullscreen-tree-layer-4 {
-            width: 140px;
-            height: 45px;
-            bottom: 200px;
-            background: var(--tree-green-4);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+            width: min(140px, 31vw);
+            height: min(45px, 10vw);
+            bottom: min(200px, 44vw);
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-4), #43A047);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
         }
 
         .fullscreen-tree-layer-5 {
-            width: 110px;
-            height: 40px;
-            bottom: 240px;
-            background: var(--tree-green-5);
-            box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.2);
+            width: min(110px, 24vw);
+            height: min(40px, 9vw);
+            bottom: min(240px, 53vw);
+            background: radial-gradient(circle at 50% 100%, var(--tree-green-5), #4CAF50);
+            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
         }
 
         .fullscreen-tree-top {
             position: absolute;
             width: 0;
             height: 0;
-            border-left: 12px solid transparent;
-            border-right: 12px solid transparent;
-            border-bottom: 20px solid var(--tree-green-5);
+            border-left: min(12px, 2.6vw) solid transparent;
+            border-right: min(12px, 2.6vw) solid transparent;
+            border-bottom: min(20px, 4.4vw) solid #2E7D32;
             opacity: 0;
             transform: translateY(10px);
             transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
             z-index: 3;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
         }
 
         .fullscreen-tree-top.active {
             opacity: 1;
             transform: translateY(0);
-            bottom: 280px;
+            bottom: min(280px, 62vw);
         }
 
         .fullscreen-progress-ring {
@@ -1097,6 +1658,7 @@
             justify-content: center;
             gap: 25px;
             margin-bottom: 30px;
+            flex-wrap: wrap;
         }
 
         .fullscreen-control-btn {
@@ -1135,6 +1697,7 @@
             justify-content: center;
             gap: 12px;
             margin-top: 25px;
+            flex-wrap: wrap;
         }
 
         .fullscreen-pomodoro-dot {
@@ -1155,7 +1718,7 @@
             animation: pulse-dot 2s infinite;
         }
 
-        /* Fullscreen Notification */
+        /* Fullscreen Notification - FIXED to 5 seconds */
         .fullscreen-notification {
             position: fixed;
             top: 0;
@@ -1180,53 +1743,7 @@
             transform: translateY(0);
         }
 
-        /* Tree Growth Indicator - FIXED with proper spacing */
-        .tree-growth-info {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
-            text-align: center;
-            display: none;
-        }
-
-        .tree-growth-info.show {
-            display: block;
-        }
-
-        .tree-growth-progress {
-            width: 100%;
-            height: 8px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 4px;
-            margin: 10px 0;
-            overflow: hidden;
-        }
-
-        .tree-growth-progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--tree-green-1), var(--tree-green-5));
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-
-        .reset-tree-btn {
-            margin-top: 10px;
-            padding: 8px 16px;
-            background: rgba(255, 255, 255, 0.1);
-            border: none;
-            border-radius: 8px;
-            color: var(--text-light);
-            cursor: pointer;
-            font-size: 0.9rem;
-            transition: var(--transition);
-        }
-
-        .reset-tree-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        /* Footer - UPDATED: Year and domain */
+        /* Footer */
         footer {
             text-align: center;
             margin-top: 40px;
@@ -1253,169 +1770,41 @@
         body.light-theme .key {
             background: rgba(0, 0, 0, 0.1);
         }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .timer-display-container {
-                width: 320px;
-                height: 320px;
-            }
-            
-            .time {
-                font-size: 4rem;
-            }
-            
-            .tree-container {
-                width: 180px;
-                height: 180px;
-            }
-
-            .fullscreen-timer-container {
-                width: 400px;
-                height: 400px;
-            }
-            
-            .fullscreen-time {
-                font-size: 5.5rem;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 10px;
-            }
-            
-            header {
-                flex-direction: column;
-                gap: 20px;
-                text-align: center;
-            }
-            
-            .timer-display-container {
-                width: 280px;
-                height: 280px;
-            }
-            
-            .time {
-                font-size: 3.5rem;
-            }
-            
-            .timer-label {
-                font-size: 1.2rem;
-            }
-            
-            .timer-controls {
-                flex-wrap: wrap;
-            }
-            
-            .control-btn {
-                padding: 14px 24px;
-                font-size: 1rem;
-            }
-            
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .panel {
-                padding: 24px;
-            }
-            
-            /* Fullscreen mobile adjustments */
-            .fullscreen-timer-container {
-                width: 320px;
-                height: 320px;
-            }
-            
-            .fullscreen-time {
-                font-size: 4.5rem;
-            }
-            
-            .fullscreen-timer-label {
-                font-size: 1.8rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .timer-display-container {
-                width: 240px;
-                height: 240px;
-            }
-            
-            .time {
-                font-size: 3rem;
-            }
-            
-            .control-btn {
-                padding: 12px 20px;
-                font-size: 0.9rem;
-            }
-            
-            .stats-grid {
-                gap: 12px;
-            }
-            
-            .stat-card {
-                padding: 20px;
-            }
-            
-            .stat-value {
-                font-size: 2rem;
-            }
-            
-            /* Fullscreen mobile adjustments */
-            .fullscreen-timer-container {
-                width: 280px;
-                height: 280px;
-            }
-            
-            .fullscreen-time {
-                font-size: 4rem;
-            }
-            
-            .fullscreen-control-btn {
-                padding: 14px 24px;
-                font-size: 1rem;
-            }
-        }
     </style>
 </head>
 <body class="dark-theme">
+    <!-- Fullscreen Exit Button - Square design -->
+    <button class="fullscreen-exit-btn" id="fullscreen-exit-btn" title="Exit Fullscreen">
+        <i class="fas fa-compress"></i>
+    </button>
+
     <!-- Fullscreen Notification -->
     <div class="fullscreen-notification" id="fullscreen-notification">
         <i class="fas fa-expand"></i>
-        <span>Press ESC to exit fullscreen</span>
+        <span>Press ESC or tap the exit button to exit fullscreen</span>
     </div>
 
-    <!-- Fullscreen Overlay (Separate from main content) -->
+    <!-- Fullscreen Overlay -->
     <div id="fullscreen-overlay" class="dark-theme">
         <div class="fullscreen-timer-container">
             <div class="fullscreen-timer-display" id="fullscreen-timer-display">
-                <!-- Progress Ring -->
                 <svg class="fullscreen-progress-ring" viewBox="0 0 508 508">
                     <circle class="fullscreen-progress-ring-bg" cx="254" cy="254" r="250"></circle>
                     <circle class="fullscreen-progress-ring-fill" cx="254" cy="254" r="250"></circle>
                 </svg>
 
-                <!-- Tree Visualization -->
                 <div class="fullscreen-tree-container">
                     <div class="fullscreen-tree" id="fullscreen-tree">
                         <div class="fullscreen-trunk" id="fullscreen-trunk"></div>
                     </div>
                 </div>
 
-                <!-- Time Display -->
                 <div class="fullscreen-time" id="fullscreen-time-display">25:00</div>
                 <div class="fullscreen-timer-label" id="fullscreen-timer-label">Focus Time</div>
                 <div class="fullscreen-session-info" id="fullscreen-session-info">Session 1 of 4</div>
             </div>
         </div>
 
-        <!-- Controls -->
         <div class="fullscreen-controls">
             <button class="fullscreen-control-btn start-btn" id="fullscreen-start-btn">
                 <i class="fas fa-play"></i> Start
@@ -1428,18 +1817,15 @@
             </button>
         </div>
 
-        <!-- Progress Indicator -->
         <div class="fullscreen-progress-indicator" id="fullscreen-progress-indicator">
             Progress: <span id="fullscreen-progress-text">0%</span>
         </div>
 
-        <!-- Pomodoro Counter -->
         <div class="fullscreen-pomodoro-counter" id="fullscreen-pomodoro-counter"></div>
     </div>
 
     <!-- Main Content -->
     <div class="container">
-        <!-- Header -->
         <header>
             <div class="logo">
                 <i class="fas fa-hourglass-half"></i>
@@ -1463,44 +1849,35 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <div class="main-grid">
-            <!-- Timer Section -->
             <main class="timer-section">
-                <!-- Mode Selector -->
                 <div class="mode-selector">
                     <button class="mode-btn focus active" data-mode="focus">Focus</button>
                     <button class="mode-btn break" data-mode="break">Break</button>
                     <button class="mode-btn long-break" data-mode="longBreak">Long Break</button>
                 </div>
 
-                <!-- Timer Display -->
                 <div class="timer-display-container">
                     <div class="timer-display" id="timer-display">
-                        <!-- Progress Ring -->
                         <svg class="progress-ring" viewBox="0 0 366 366">
                             <circle class="progress-ring-bg" cx="183" cy="183" r="180"></circle>
                             <circle class="progress-ring-fill" cx="183" cy="183" r="180"></circle>
                         </svg>
 
-                        <!-- Tree Visualization -->
                         <div class="tree-container">
                             <div class="tree" id="tree">
                                 <div class="trunk" id="trunk"></div>
                             </div>
                         </div>
 
-                        <!-- Time Display -->
                         <div class="time" id="time-display">25:00</div>
                         <div class="timer-label" id="timer-label">Focus Time</div>
                         <div class="session-info" id="session-info">Session 1 of 4</div>
                     </div>
                 </div>
 
-                <!-- Pomodoro Counter -->
                 <div class="pomodoro-counter" id="pomodoro-counter"></div>
 
-                <!-- Timer Controls -->
                 <div class="timer-controls">
                     <button class="control-btn start-btn" id="start-btn">
                         <i class="fas fa-play"></i> Start
@@ -1513,43 +1890,111 @@
                     </button>
                 </div>
 
-                <!-- Progress Indicator -->
                 <div class="progress-indicator" id="progress-indicator">
                     <div class="time-progress" id="time-progress">Progress: 0%</div>
                 </div>
 
-                <!-- Tree Growth Info -->
-                <div class="tree-growth-info" id="tree-growth-info">
-                    <div>Tree Growth: <span id="tree-growth-text">0/5</span></div>
-                    <div class="tree-growth-progress">
-                        <div class="tree-growth-progress-bar" id="tree-growth-bar" style="width: 0%"></div>
+                <!-- NEW: Stats and Tasks Grid -->
+                <div class="stats-tasks-grid">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="completed-pomodoros">0</div>
+                            <div class="stat-label">Pomodoros</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="focus-time-today">0m</div>
+                            <div class="stat-label">Focus Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="break-time-today">0m</div>
+                            <div class="stat-label">Break Time</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="tasks-completed">0</div>
+                            <div class="stat-label">Tasks Done</div>
+                        </div>
                     </div>
-                    <button class="reset-tree-btn" id="reset-tree-btn">Reset Tree</button>
-                </div>
 
-                <!-- Statistics -->
-                <div class="stats-grid">
-                    <div class="stat-card">
-                        <div class="stat-value" id="completed-pomodoros">0</div>
-                        <div class="stat-label">Pomodoros</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="focus-time-today">0m</div>
-                        <div class="stat-label">Focus Time</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="break-time-today">0m</div>
-                        <div class="stat-label">Break Time</div>
-                    </div>
-                    <div class="stat-card">
-                        <div class="stat-value" id="tasks-completed">0</div>
-                        <div class="stat-label">Tasks Done</div>
+                    <div class="tasks-preview">
+                        <h3 class="tasks-preview-title">
+                            <i class="fas fa-tasks"></i> Today's Tasks
+                        </h3>
+                        <ul class="tasks-preview-list" id="tasks-preview-list">
+                            <li class="task-preview-item">
+                                <div style="text-align: center; padding: 20px; color: var(--text-gray);">
+                                    No tasks yet. Add one in the task list!
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="view-all-tasks">
+                            <button class="view-all-btn" id="view-all-tasks-btn">
+                                <i class="fas fa-external-link-alt"></i> View All Tasks
+                            </button>
+                        </div>
                     </div>
                 </div>
             </main>
 
-            <!-- Sidebar -->
             <div class="sidebar">
+                <!-- Music Panel -->
+                <div class="panel music-panel">
+                    <div class="music-header">
+                        <h2 class="panel-title"><i class="fas fa-music"></i> Study Music</h2>
+                        <span class="mood-suggestion" id="mood-suggestion">For Focus</span>
+                    </div>
+                    
+                    <div class="music-controls">
+                        <button class="music-btn" id="music-play-btn">
+                            <i class="fas fa-play"></i> Play
+                        </button>
+                        <button class="music-btn" id="music-pause-btn" disabled>
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="music-btn" id="music-next-btn">
+                            <i class="fas fa-forward"></i> Next
+                        </button>
+                        <button class="music-btn" id="music-loop-btn">
+                            <i class="fas fa-redo"></i> Loop
+                        </button>
+                    </div>
+
+                    <!-- Desktop Volume Slider (Android style) -->
+                    <div class="volume-container">
+                        <div class="volume-label">
+                            <span>Volume</span>
+                            <span id="volume-value">70%</span>
+                        </div>
+                        <input type="range" class="android-volume-slider" id="volume-slider" 
+                               min="0" max="100" value="70" step="1">
+                    </div>
+
+                    <!-- Mobile Volume Control (Simplified) -->
+                    <div class="mobile-volume-control">
+                        <i class="fas fa-volume-up"></i>
+                        <input type="range" class="mobile-volume-slider" id="mobile-volume-slider" 
+                               min="0" max="100" value="70" step="1">
+                        <span id="mobile-volume-value">70%</span>
+                    </div>
+
+                    <!-- Track Selection -->
+                    <div class="track-selector">
+                        <div class="track-item active" data-track="0">
+                            <div class="track-icon"><i class="fas fa-play-circle"></i></div>
+                            <div class="track-info">
+                                <div class="track-title">Rainy Lofi Hiphop</div>
+                                <div class="track-mood">Calm • Focus • Relaxed</div>
+                            </div>
+                        </div>
+                        <div class="track-item" data-track="1">
+                            <div class="track-icon"><i class="fas fa-play-circle"></i></div>
+                            <div class="track-info">
+                                <div class="track-title">Seaside Haven</div>
+                                <div class="track-mood">Peaceful • Ambient • Creative</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Settings Panel -->
                 <div class="panel settings-panel">
                     <h2 class="panel-title"><i class="fas fa-cog"></i> Timer Settings</h2>
@@ -1582,6 +2027,13 @@
                         </div>
                     </div>
 
+                    <div class="alarm-selector">
+                        <label>Alarm Sound</label>
+                        <div class="alarm-buttons" id="alarm-buttons">
+                            <!-- Generated by JavaScript -->
+                        </div>
+                    </div>
+
                     <div class="auto-apply">
                         <input type="checkbox" id="auto-apply" checked>
                         <label for="auto-apply">Apply changes immediately</label>
@@ -1604,14 +2056,13 @@
             </div>
         </div>
 
-        <!-- Footer - UPDATED: Year and domain -->
         <footer>
             <p>Pomodoram &copy; 2026 | pomodoram.online | Focus Timer based on the Pomodoro Technique</p>
             <div class="hotkeys">
                 <span class="key">Space</span> Start/Pause •
                 <span class="key">S</span> Skip •
                 <span class="key">F</span> Fullscreen •
-                <span class="key">R</span> Reset •
+                <span class="key">M</span> Toggle Music •
                 <span class="key">ESC</span> Exit Fullscreen
             </div>
         </footer>
@@ -1628,15 +2079,50 @@
         let focusTimeToday = 0;
         let breakTimeToday = 0;
         let tasksCompleted = 0;
-        let treeStage = 0; // Tracks tree growth (0-5)
+        let treeStage = 0;
         let isFullscreen = false;
-        let completedFocusSessions = 0; // Track completed focus sessions for tree growth
         
         // Timer settings
         let focusTime = 25 * 60;
         let breakTime = 5 * 60;
         let longBreakTime = 15 * 60;
         let sessionsUntilLongBreak = 4;
+        
+        // FIXED: Music System Variables with proper Google Drive links
+        let audioPlayer = new Audio();
+        let isMusicPlaying = false;
+        let isMusicLooping = false;
+        let currentTrackIndex = 0;
+        let musicTracks = [
+            {
+                title: "Rainy Lofi Hiphop",
+                mood: ["Calm", "Focus", "Relaxed"],
+                // FIXED: Correct Google Drive streaming link format
+                url: "https://docs.google.com/uc?export=download&id=1dHorR6HZ6t3qlgb6Aqh_3KKcvy2X1En_",
+                altUrl: "https://drive.google.com/uc?export=download&id=1dHorR6HZ6t3qlgb6Aqh_3KKcvy2X1En_",
+                type: "audio/mpeg"
+            },
+            {
+                title: "Seaside Haven",
+                mood: ["Peaceful", "Ambient", "Creative"],
+                url: "https://docs.google.com/uc?export=download&id=13DdWPsNB1Ky0E9hoVslgcxUIZy_sDcvW",
+                altUrl: "https://drive.google.com/uc?export=download&id=13DdWPsNB1Ky0E9hoVslgcxUIZy_sDcvW",
+                type: "audio/mpeg"
+            }
+        ];
+        
+        // Alarm Sounds
+        let alarmSounds = [
+            { name: "Classic Beep", type: "beep" },
+            { name: "Gentle Chime", type: "chime" },
+            { name: "Digital Bell", type: "bell" },
+            { name: "Soft Notification", type: "soft" }
+        ];
+        let selectedAlarmSound = "beep";
+        
+        // Task Reminder
+        let taskReminderInterval;
+        let lastReminderTime = 0;
         
         // DOM Elements - Main View
         const timeDisplay = document.getElementById('time-display');
@@ -1653,10 +2139,10 @@
         const pomodoroCounter = document.getElementById('pomodoro-counter');
         const progressRingFill = document.querySelector('.progress-ring-fill');
         const timeProgress = document.getElementById('time-progress');
-        const treeGrowthInfo = document.getElementById('tree-growth-info');
-        const treeGrowthText = document.getElementById('tree-growth-text');
-        const treeGrowthBar = document.getElementById('tree-growth-bar');
-        const resetTreeBtn = document.getElementById('reset-tree-btn');
+        
+        // NEW: Tasks Preview Elements
+        const tasksPreviewList = document.getElementById('tasks-preview-list');
+        const viewAllTasksBtn = document.getElementById('view-all-tasks-btn');
         
         // DOM Elements - Fullscreen View
         const fullscreenOverlay = document.getElementById('fullscreen-overlay');
@@ -1671,12 +2157,11 @@
         const fullscreenProgressText = document.getElementById('fullscreen-progress-text');
         const fullscreenPomodoroCounter = document.getElementById('fullscreen-pomodoro-counter');
         const fullscreenProgressRingFill = document.querySelector('.fullscreen-progress-ring-fill');
+        const fullscreenExitBtn = document.getElementById('fullscreen-exit-btn');
         
         // Tree elements
         const tree = document.getElementById('tree');
-        const trunk = document.getElementById('trunk');
         const fullscreenTree = document.getElementById('fullscreen-tree');
-        const fullscreenTrunk = document.getElementById('fullscreen-trunk');
         
         // Settings elements
         const focusTimeInput = document.getElementById('focus-time');
@@ -1700,8 +2185,22 @@
         const addTaskBtn = document.getElementById('add-task-btn');
         const tasksList = document.getElementById('tasks-list');
         
+        // Music DOM Elements
+        const musicPlayBtn = document.getElementById('music-play-btn');
+        const musicPauseBtn = document.getElementById('music-pause-btn');
+        const musicNextBtn = document.getElementById('music-next-btn');
+        const musicLoopBtn = document.getElementById('music-loop-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const mobileVolumeSlider = document.getElementById('mobile-volume-slider');
+        const volumeValue = document.getElementById('volume-value');
+        const mobileVolumeValue = document.getElementById('mobile-volume-value');
+        const moodSuggestion = document.getElementById('mood-suggestion');
+        const trackItems = document.querySelectorAll('.track-item');
+        const alarmButtonsContainer = document.getElementById('alarm-buttons');
+        
         // ==================== INITIALIZATION ====================
         function init() {
+            console.log("Initializing Pomodoram...");
             loadFromLocalStorage();
             timeLeft = getCurrentModeDuration();
             updateDisplay();
@@ -1713,68 +2212,23 @@
             updateSessionInfo();
             updateStats();
             renderTasks();
+            updateTasksPreview(); // NEW: Update tasks preview
             setupEventListeners();
             updateSettingsDisplay();
-            updateTreeGrowthDisplay();
             
-            // Show tree growth info if tree has any growth
-            if (treeStage > 0) {
-                treeGrowthInfo.classList.add('show');
-            }
-        }
-        
-        // ==================== EVENT LISTENERS ====================
-        function setupEventListeners() {
-            // Main timer controls
-            startBtn.addEventListener('click', toggleTimer);
-            pauseBtn.addEventListener('click', pauseTimer);
-            skipBtn.addEventListener('click', skipSession);
-            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            // Initialize Music System
+            initMusicSystem();
             
-            // Fullscreen timer controls
-            fullscreenStartBtn.addEventListener('click', toggleTimer);
-            fullscreenPauseBtn.addEventListener('click', pauseTimer);
-            fullscreenSkipBtn.addEventListener('click', skipSession);
+            // Initialize Alarm Sounds Selector
+            initAlarmSounds();
             
-            // Mode selection
-            modeButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    if (!isRunning) {
-                        modeButtons.forEach(b => b.classList.remove('active'));
-                        btn.classList.add('active');
-                        currentMode = btn.dataset.mode;
-                        resetTimer();
-                    }
-                });
-            });
+            // Start 2-hour Task Reminder Check
+            startTaskReminder();
             
-            // Theme selection
-            themeButtons.forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const theme = btn.dataset.theme;
-                    setTheme(theme);
-                    themeButtons.forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                });
-            });
+            // Update Mood Suggestion
+            updateMoodSuggestion();
             
-            // Settings changes
-            focusTimeInput.addEventListener('input', updateSettings);
-            breakTimeInput.addEventListener('input', updateSettings);
-            longBreakTimeInput.addEventListener('input', updateSettings);
-            sessionsCountInput.addEventListener('input', updateSettings);
-            
-            // Task management
-            addTaskBtn.addEventListener('click', addTask);
-            taskInput.addEventListener('keypress', (e) => {
-                if (e.key === 'Enter') addTask();
-            });
-            
-            // Reset tree button
-            resetTreeBtn.addEventListener('click', resetTree);
-            
-            // Keyboard shortcuts
-            document.addEventListener('keydown', handleKeyboardShortcut);
+            console.log("Pomodoram initialized successfully!");
         }
         
         // ==================== TIMER FUNCTIONS ====================
@@ -1808,7 +2262,9 @@
                 updateDisplay();
                 updateFullscreenDisplay();
                 
+                // Update tree growth during focus session
                 if (currentMode === 'focus') {
+                    updateTreeGrowth();
                     focusTimeToday++;
                 } else {
                     breakTimeToday++;
@@ -1856,29 +2312,20 @@
             fullscreenPauseBtn.disabled = true;
             fullscreenStartBtn.innerHTML = '<i class="fas fa-play"></i> Start';
             
-            playNotificationSound();
-            showNotification();
+            // Play alarm sound
+            playAlarmSound();
+            
+            // Show notification
+            showNotification("Session complete! Time for a break.", "info");
             
             if (currentMode === 'focus') {
                 totalPomodoros++;
                 pomodoroCount++;
-                completedFocusSessions++;
                 
-                // GROW TREE - Grow after every focus session
-                if (completedFocusSessions % 2 === 0 && treeStage < 5) {
-                    treeStage++;
-                    updateTree();
-                    updateFullscreenTree();
-                    updateTreeGrowthDisplay();
-                    
-                    // Show tree growth info
-                    treeGrowthInfo.classList.add('show');
-                    
-                    // Show celebration when tree is fully grown
-                    if (treeStage === 5) {
-                        showTreeCompleteNotification();
-                    }
-                }
+                // Reset tree for next session
+                treeStage = 0;
+                updateTree();
+                updateFullscreenTree();
                 
                 if (pomodoroCount >= sessionsUntilLongBreak) {
                     pomodoroCount = 0;
@@ -1897,6 +2344,9 @@
                     btn.classList.add('active');
                 }
             });
+            
+            // Update mood suggestion
+            updateMoodSuggestion();
             
             resetTimer();
             saveToLocalStorage();
@@ -1942,16 +2392,18 @@
             // Update progress ring
             const totalDuration = getCurrentModeDuration();
             const progress = ((totalDuration - timeLeft) / totalDuration) * 1130;
-            progressRingFill.style.strokeDashoffset = 1130 - progress;
-            
-            // Update progress ring color
-            const progressColor = getModeColor(currentMode);
-            progressRingFill.style.stroke = progressColor;
-            
-            // Update progress text
-            const progressPercent = Math.round(((totalDuration - timeLeft) / totalDuration) * 100);
-            timeProgress.textContent = `Progress: ${progressPercent}%`;
-            timeProgress.style.color = progressColor;
+            if (progressRingFill) {
+                progressRingFill.style.strokeDashoffset = 1130 - progress;
+                
+                // Update progress ring color
+                const progressColor = getModeColor(currentMode);
+                progressRingFill.style.stroke = progressColor;
+                
+                // Update progress text
+                const progressPercent = Math.round(((totalDuration - timeLeft) / totalDuration) * 100);
+                timeProgress.textContent = `Progress: ${progressPercent}%`;
+                timeProgress.style.color = progressColor;
+            }
         }
         
         function updateFullscreenDisplay() {
@@ -1975,19 +2427,21 @@
             // Update progress ring
             const totalDuration = getCurrentModeDuration();
             const progress = ((totalDuration - timeLeft) / totalDuration) * 1570;
-            fullscreenProgressRingFill.style.strokeDashoffset = 1570 - progress;
-            
-            // Update progress ring color
-            const progressColor = getModeColor(currentMode);
-            fullscreenProgressRingFill.style.stroke = progressColor;
-            
-            // Update progress text
-            const progressPercent = Math.round(((totalDuration - timeLeft) / totalDuration) * 100);
-            fullscreenProgressText.textContent = `${progressPercent}%`;
-            fullscreenProgressIndicator.style.color = progressColor;
-            
-            // Update session info
-            fullscreenSessionInfo.textContent = `Session ${pomodoroCount + 1} of ${sessionsUntilLongBreak}`;
+            if (fullscreenProgressRingFill) {
+                fullscreenProgressRingFill.style.strokeDashoffset = 1570 - progress;
+                
+                // Update progress ring color
+                const progressColor = getModeColor(currentMode);
+                fullscreenProgressRingFill.style.stroke = progressColor;
+                
+                // Update progress text
+                const progressPercent = Math.round(((totalDuration - timeLeft) / totalDuration) * 100);
+                fullscreenProgressText.textContent = `${progressPercent}%`;
+                fullscreenProgressIndicator.style.color = progressColor;
+                
+                // Update session info
+                fullscreenSessionInfo.textContent = `Session ${pomodoroCount + 1} of ${sessionsUntilLongBreak}`;
+            }
         }
         
         function getModeColor(mode) {
@@ -1999,7 +2453,7 @@
             }
         }
         
-        // ==================== TREE FUNCTIONS ====================
+        // ==================== TREE FUNCTIONS (IMPROVED) ====================
         function updateTree() {
             // Clear existing tree layers and top
             const existingLayers = tree.querySelectorAll('.tree-layer');
@@ -2020,7 +2474,7 @@
                 }, i * 200);
             }
             
-            // Add tree top if tree has at least 3 layers (looks better)
+            // Add tree top if tree has at least 3 layers
             if (treeStage >= 3) {
                 const treeTop = document.createElement('div');
                 treeTop.className = 'tree-top';
@@ -2064,19 +2518,634 @@
             }
         }
         
-        function updateTreeGrowthDisplay() {
-            treeGrowthText.textContent = `${treeStage}/5`;
-            treeGrowthBar.style.width = `${(treeStage / 5) * 100}%`;
+        function updateTreeGrowth() {
+            if (currentMode === 'focus') {
+                const totalDuration = getCurrentModeDuration();
+                const timeElapsed = totalDuration - timeLeft;
+                const progress = timeElapsed / totalDuration;
+                
+                // Tree grows from 0 to 5 stages during focus session
+                const newTreeStage = Math.min(5, Math.floor(progress * 6)); // 0-5
+                
+                if (newTreeStage !== treeStage) {
+                    treeStage = newTreeStage;
+                    updateTree();
+                    updateFullscreenTree();
+                }
+            }
         }
         
-        function resetTree() {
-            treeStage = 0;
-            completedFocusSessions = 0;
-            updateTree();
-            updateFullscreenTree();
-            updateTreeGrowthDisplay();
-            treeGrowthInfo.classList.remove('show');
+        // ==================== FIXED MUSIC SYSTEM ====================
+        function initMusicSystem() {
+            console.log("Initializing music system...");
+            
+            // Set initial volume
+            audioPlayer.volume = volumeSlider.value / 100;
+            
+            // Set initial volume display
+            updateVolumeDisplay();
+            
+            // Update music buttons
+            updateMusicButtons();
+            
+            // Set loop button state
+            musicLoopBtn.classList.toggle('active', isMusicLooping);
+            
+            // Load first track
+            loadTrack(currentTrackIndex);
+            
+            console.log("Music system initialized");
+        }
+        
+        function loadTrack(index, retryCount = 0) {
+            if (index >= 0 && index < musicTracks.length) {
+                console.log(`Loading track ${index}: ${musicTracks[index].title}`);
+                currentTrackIndex = index;
+                
+                const track = musicTracks[index];
+                
+                // Stop current audio if playing
+                if (isMusicPlaying) {
+                    audioPlayer.pause();
+                }
+                
+                // Create a new audio object
+                const newAudio = new Audio();
+                
+                // Determine which URL to try
+                let urlToTry;
+                if (retryCount === 0) {
+                    urlToTry = track.url;
+                } else if (retryCount === 1 && track.altUrl) {
+                    urlToTry = track.altUrl;
+                } else {
+                    // All attempts failed, use fallback
+                    useFallbackMusic(index);
+                    return;
+                }
+                
+                console.log(`Attempt ${retryCount + 1}: Loading from ${urlToTry}`);
+                
+                // Set up event listeners
+                newAudio.addEventListener('canplaythrough', function() {
+                    console.log(`Successfully loaded: ${track.title}`);
+                    audioPlayer = newAudio;
+                    updateTrackIcons();
+                    
+                    // Auto-play if music was playing before
+                    if (isMusicPlaying) {
+                        newAudio.play().then(() => {
+                            console.log("Track resumed playing");
+                        }).catch(e => {
+                            console.error("Auto-play failed:", e);
+                            // User interaction might be required
+                            isMusicPlaying = false;
+                            updateMusicButtons();
+                        });
+                    }
+                });
+                
+                newAudio.addEventListener('error', function(e) {
+                    console.error(`Error loading track (attempt ${retryCount + 1}):`, e);
+                    // Try again with alternate URL
+                    if (retryCount < 2) {
+                        setTimeout(() => loadTrack(index, retryCount + 1), 500);
+                    } else {
+                        useFallbackMusic(index);
+                    }
+                });
+                
+                newAudio.addEventListener('ended', handleTrackEnd);
+                
+                // Set audio properties
+                newAudio.src = urlToTry;
+                newAudio.volume = audioPlayer.volume;
+                newAudio.loop = isMusicLooping;
+                
+                // Update UI
+                trackItems.forEach((item, i) => {
+                    item.classList.toggle('active', i === currentTrackIndex);
+                    if (i === currentTrackIndex) {
+                        item.classList.add('playing');
+                    } else {
+                        item.classList.remove('playing');
+                    }
+                });
+                
+                // Update mood suggestion
+                updateMoodSuggestion();
+            }
+        }
+        
+        function useFallbackMusic(index) {
+            console.log("Using fallback music...");
+            const fallbackTracks = [
+                {
+                    title: "Relaxing Study Music",
+                    mood: ["Calm", "Focus", "Relaxed"],
+                    url: "https://assets.mixkit.co/music/preview/mixkit-driving-ambition-32.mp3",
+                    type: "audio/mpeg"
+                },
+                {
+                    title: "Ambient Background",
+                    mood: ["Peaceful", "Ambient", "Creative"],
+                    url: "https://assets.mixkit.co/music/preview/mixkit-deep-urban-623.mp3",
+                    type: "audio/mpeg"
+                }
+            ];
+            
+            if (index < fallbackTracks.length) {
+                // Replace the track with fallback
+                musicTracks[index] = {
+                    ...musicTracks[index],
+                    url: fallbackTracks[index].url,
+                    isFallback: true
+                };
+                
+                showNotification("Using fallback music. Your tracks will be available soon.", "info");
+                
+                // Retry loading
+                setTimeout(() => loadTrack(index, 0), 500);
+            }
+        }
+        
+        function playMusic() {
+            console.log("Playing music...");
+            
+            if (!audioPlayer.src) {
+                loadTrack(currentTrackIndex);
+                setTimeout(() => playMusic(), 500);
+                return;
+            }
+            
+            audioPlayer.play().then(() => {
+                isMusicPlaying = true;
+                updateMusicButtons();
+                updateTrackIcons();
+                console.log("Music playing successfully");
+            }).catch(e => {
+                console.error("Error playing audio:", e);
+                showNotification("Click play again to start music. Some browsers require user interaction.", "info");
+                isMusicPlaying = false;
+                updateMusicButtons();
+            });
+        }
+        
+        function pauseMusic() {
+            console.log("Pausing music...");
+            audioPlayer.pause();
+            isMusicPlaying = false;
+            updateMusicButtons();
+            updateTrackIcons();
+        }
+        
+        function nextTrack() {
+            console.log("Next track...");
+            let nextIndex = (currentTrackIndex + 1) % musicTracks.length;
+            loadTrack(nextIndex);
+            if (isMusicPlaying) {
+                setTimeout(() => playMusic(), 300);
+            }
+        }
+        
+        function toggleLoop() {
+            isMusicLooping = !isMusicLooping;
+            audioPlayer.loop = isMusicLooping;
+            musicLoopBtn.classList.toggle('active', isMusicLooping);
+            musicLoopBtn.innerHTML = `<i class="fas fa-redo"></i> ${isMusicLooping ? 'Looping' : 'Loop'}`;
             saveToLocalStorage();
+        }
+        
+        function handleTrackEnd() {
+            console.log("Track ended");
+            if (!isMusicLooping) {
+                nextTrack();
+                if (isMusicPlaying) {
+                    setTimeout(() => playMusic(), 300);
+                }
+            }
+        }
+        
+        function updateMusicButtons() {
+            musicPlayBtn.disabled = isMusicPlaying;
+            musicPauseBtn.disabled = !isMusicPlaying;
+            musicPlayBtn.innerHTML = `<i class="fas fa-play"></i> ${isMusicPlaying ? 'Playing' : 'Play'}`;
+        }
+        
+        function updateTrackIcons() {
+            trackItems.forEach((item, i) => {
+                const icon = item.querySelector('.track-icon i');
+                if (icon) {
+                    if (i === currentTrackIndex && isMusicPlaying) {
+                        icon.className = 'fas fa-pause-circle';
+                        item.classList.add('playing');
+                    } else {
+                        icon.className = 'fas fa-play-circle';
+                        item.classList.remove('playing');
+                    }
+                }
+            });
+        }
+        
+        function updateVolumeDisplay() {
+            const volume = volumeSlider.value;
+            volumeValue.textContent = `${volume}%`;
+            if (mobileVolumeValue) {
+                mobileVolumeValue.textContent = `${volume}%`;
+            }
+            if (mobileVolumeSlider) {
+                mobileVolumeSlider.value = volume;
+            }
+            audioPlayer.volume = volume / 100;
+        }
+        
+        function updateMoodSuggestion() {
+            let suggestion = "";
+            const track = musicTracks[currentTrackIndex];
+            const trackMood = track ? track.mood.join(" • ") : "";
+            
+            switch(currentMode) {
+                case 'focus':
+                    suggestion = `For Focus • ${trackMood}`;
+                    break;
+                case 'break':
+                    suggestion = `For Relaxation • ${trackMood}`;
+                    break;
+                case 'longBreak':
+                    suggestion = `For Recharging • ${trackMood}`;
+                    break;
+            }
+            moodSuggestion.textContent = suggestion;
+        }
+        
+        // ==================== TASKS PREVIEW FUNCTIONS ====================
+        function updateTasksPreview() {
+            const tasks = getTasks();
+            const today = new Date().toDateString();
+            const todayTasks = tasks.filter(task => {
+                const taskDate = new Date(task.createdAt).toDateString();
+                return taskDate === today;
+            }).slice(0, 5); // Show only first 5 tasks
+            
+            tasksPreviewList.innerHTML = '';
+            
+            if (todayTasks.length === 0) {
+                tasksPreviewList.innerHTML = `
+                    <li class="task-preview-item">
+                        <div style="text-align: center; padding: 20px; color: var(--text-gray);">
+                            No tasks yet. Add one in the task list!
+                        </div>
+                    </li>
+                `;
+                return;
+            }
+            
+            todayTasks.forEach(task => {
+                const li = document.createElement('li');
+                li.className = 'task-preview-item';
+                
+                li.innerHTML = `
+                    <input type="checkbox" class="task-preview-checkbox" ${task.completed ? 'checked' : ''} data-id="${task.id}">
+                    <span class="task-preview-text ${task.completed ? 'completed' : ''}">${task.text}</span>
+                `;
+                
+                tasksPreviewList.appendChild(li);
+            });
+            
+            // Add event listeners to preview checkboxes
+            document.querySelectorAll('.task-preview-checkbox').forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const taskId = parseInt(this.dataset.id);
+                    const completed = this.checked;
+                    
+                    const tasks = getTasks();
+                    const taskIndex = tasks.findIndex(task => task.id === taskId);
+                    
+                    if (taskIndex !== -1) {
+                        tasks[taskIndex].completed = completed;
+                        localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
+                        
+                        if (completed) {
+                            tasksCompleted++;
+                        } else {
+                            tasksCompleted--;
+                        }
+                        
+                        updateStats();
+                        updateTasksPreview();
+                        renderTasks();
+                        saveToLocalStorage();
+                    }
+                });
+            });
+        }
+        
+        // ==================== EVENT LISTENERS ====================
+        function setupEventListeners() {
+            console.log("Setting up event listeners...");
+            
+            // Main timer controls
+            startBtn.addEventListener('click', toggleTimer);
+            pauseBtn.addEventListener('click', pauseTimer);
+            skipBtn.addEventListener('click', skipSession);
+            fullscreenBtn.addEventListener('click', toggleFullscreen);
+            
+            // Fullscreen timer controls
+            fullscreenStartBtn.addEventListener('click', toggleTimer);
+            fullscreenPauseBtn.addEventListener('click', pauseTimer);
+            fullscreenSkipBtn.addEventListener('click', skipSession);
+            fullscreenExitBtn.addEventListener('click', exitFullscreen);
+            
+            // Mode selection
+            modeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (!isRunning) {
+                        modeButtons.forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        currentMode = this.dataset.mode;
+                        updateMoodSuggestion();
+                        resetTimer();
+                    }
+                });
+            });
+            
+            // Theme selection
+            themeButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const theme = this.dataset.theme;
+                    setTheme(theme);
+                    themeButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+            
+            // Settings changes
+            focusTimeInput.addEventListener('input', updateSettings);
+            breakTimeInput.addEventListener('input', updateSettings);
+            longBreakTimeInput.addEventListener('input', updateSettings);
+            sessionsCountInput.addEventListener('input', updateSettings);
+            
+            // Music System Listeners
+            musicPlayBtn.addEventListener('click', playMusic);
+            musicPauseBtn.addEventListener('click', pauseMusic);
+            musicNextBtn.addEventListener('click', nextTrack);
+            musicLoopBtn.addEventListener('click', toggleLoop);
+            
+            // Volume sliders
+            volumeSlider.addEventListener('input', function() {
+                updateVolumeDisplay();
+                saveToLocalStorage();
+            });
+            
+            if (mobileVolumeSlider) {
+                mobileVolumeSlider.addEventListener('input', function() {
+                    volumeSlider.value = this.value;
+                    updateVolumeDisplay();
+                    saveToLocalStorage();
+                });
+            }
+            
+            // Track selection
+            trackItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const trackIndex = parseInt(this.dataset.track);
+                    if (currentTrackIndex !== trackIndex) {
+                        loadTrack(trackIndex);
+                        if (isMusicPlaying) {
+                            setTimeout(() => playMusic(), 300);
+                        }
+                    } else {
+                        // Toggle play/pause if clicking the current track
+                        if (isMusicPlaying) {
+                            pauseMusic();
+                        } else {
+                            playMusic();
+                        }
+                    }
+                });
+            });
+            
+            // Task management
+            addTaskBtn.addEventListener('click', addTask);
+            taskInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') addTask();
+            });
+            
+            // View all tasks button
+            viewAllTasksBtn.addEventListener('click', () => {
+                // Scroll to tasks panel
+                document.querySelector('.tasks-panel').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Keyboard shortcuts
+            document.addEventListener('keydown', handleKeyboardShortcut);
+            
+            // Window resize for mobile optimization
+            window.addEventListener('resize', checkMobileView);
+            
+            console.log("Event listeners set up successfully");
+        }
+        
+        // ==================== FULLSCREEN FUNCTIONS ====================
+        function toggleFullscreen() {
+            if (isFullscreen) {
+                exitFullscreen();
+            } else {
+                enterFullscreen();
+            }
+        }
+        
+        function enterFullscreen() {
+            isFullscreen = true;
+            
+            // Show fullscreen overlay
+            fullscreenOverlay.classList.add('active');
+            fullscreenOverlay.className = 'active ' + document.body.className;
+            
+            // Show exit button
+            fullscreenExitBtn.style.display = 'flex';
+            
+            // Update fullscreen display
+            updateFullscreenDisplay();
+            
+            // Show notification for 5 seconds
+            showFullscreenNotification();
+            
+            saveToLocalStorage();
+        }
+        
+        function exitFullscreen() {
+            isFullscreen = false;
+            fullscreenOverlay.classList.remove('active');
+            fullscreenExitBtn.style.display = 'none';
+            saveToLocalStorage();
+        }
+        
+        function showFullscreenNotification() {
+            fullscreenNotification.classList.add('show');
+            setTimeout(() => {
+                fullscreenNotification.classList.remove('show');
+            }, 5000); // FIXED: 5 seconds
+        }
+        
+        function checkMobileView() {
+            // Update tree size if needed
+            if (isFullscreen) {
+                fullscreenExitBtn.style.display = 'flex';
+            }
+        }
+        
+        // ==================== THEME FUNCTIONS ====================
+        function setTheme(theme) {
+            document.body.className = `${theme}-theme`;
+            if (isFullscreen) {
+                fullscreenOverlay.className = `active ${theme}-theme`;
+            }
+            saveToLocalStorage();
+        }
+        
+        // ==================== SETTINGS FUNCTIONS ====================
+        function updateSettings() {
+            // Update displayed values
+            focusValue.textContent = focusTimeInput.value;
+            breakValue.textContent = breakTimeInput.value;
+            longBreakValue.textContent = longBreakTimeInput.value;
+            sessionsValue.textContent = sessionsCountInput.value;
+            
+            // Update timer settings
+            focusTime = parseInt(focusTimeInput.value) * 60;
+            breakTime = parseInt(breakTimeInput.value) * 60;
+            longBreakTime = parseInt(longBreakTimeInput.value) * 60;
+            sessionsUntilLongBreak = parseInt(sessionsCountInput.value);
+            
+            // Apply changes if auto-apply is enabled or timer is not running
+            if (autoApplyCheckbox.checked || !isRunning) {
+                resetTimer();
+            }
+            
+            updatePomodoroCounter();
+            updateFullscreenPomodoroCounter();
+            saveToLocalStorage();
+        }
+        
+        function updateSettingsDisplay() {
+            focusTimeInput.value = focusTime / 60;
+            breakTimeInput.value = breakTime / 60;
+            longBreakTimeInput.value = longBreakTime / 60;
+            sessionsCountInput.value = sessionsUntilLongBreak;
+            
+            focusValue.textContent = focusTime / 60;
+            breakValue.textContent = breakTime / 60;
+            longBreakValue.textContent = longBreakTime / 60;
+            sessionsValue.textContent = sessionsUntilLongBreak;
+        }
+        
+        // ==================== ALARM SOUNDS SYSTEM ====================
+        function initAlarmSounds() {
+            alarmButtonsContainer.innerHTML = '';
+            alarmSounds.forEach((sound, index) => {
+                const button = document.createElement('button');
+                button.className = `alarm-btn ${sound.type === selectedAlarmSound ? 'active' : ''}`;
+                button.textContent = sound.name;
+                button.dataset.sound = sound.type;
+                button.addEventListener('click', () => selectAlarmSound(sound.type));
+                alarmButtonsContainer.appendChild(button);
+            });
+        }
+        
+        function selectAlarmSound(soundType) {
+            selectedAlarmSound = soundType;
+            
+            // Update UI
+            document.querySelectorAll('.alarm-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.sound === soundType);
+            });
+            
+            // Test the sound
+            playAlarmSound();
+            
+            saveToLocalStorage();
+        }
+        
+        function playAlarmSound() {
+            switch(selectedAlarmSound) {
+                case 'beep':
+                    playBeepSound(800, 0.3, 1);
+                    break;
+                case 'chime':
+                    playBeepSound(600, 0.2, 2);
+                    break;
+                case 'bell':
+                    playBeepSound(400, 0.4, 0.5);
+                    break;
+                case 'soft':
+                    playBeepSound(1000, 0.1, 1.5);
+                    break;
+            }
+        }
+        
+        function playBeepSound(freq, volume, duration) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = freq;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                console.log("Beep!");
+            }
+        }
+        
+        // ==================== TASK REMINDER SYSTEM ====================
+        function startTaskReminder() {
+            // Check every minute if 2 hours have passed
+            taskReminderInterval = setInterval(() => {
+                const now = Date.now();
+                const twoHours = 2 * 60 * 60 * 1000;
+                
+                if (now - lastReminderTime >= twoHours) {
+                    checkPendingTasks();
+                    lastReminderTime = now;
+                }
+            }, 60000); // Check every minute
+        }
+        
+        function checkPendingTasks() {
+            const tasks = getTasks();
+            const pendingTasks = tasks.filter(task => !task.completed);
+            
+            if (pendingTasks.length > 0) {
+                showNotification(`⏰ You have ${pendingTasks.length} task(s) pending. Keep going!`, "info");
+            }
+        }
+        
+        // ==================== NOTIFICATION FUNCTIONS (FIXED to 5 seconds) ====================
+        function showNotification(message, type = "info") {
+            // Remove any existing notifications
+            const existingNotifications = document.querySelectorAll('.fullscreen-notification.show');
+            existingNotifications.forEach(notification => notification.remove());
+            
+            const notification = document.createElement('div');
+            notification.className = `fullscreen-notification show ${type}`;
+            notification.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'bell'}"></i><span>${message}</span>`;
+            document.body.appendChild(notification);
+            
+            // FIXED: Remove after 5 seconds
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 5000);
         }
         
         // ==================== POMODORO COUNTER ====================
@@ -2118,88 +3187,6 @@
             sessionInfo.textContent = `Session ${pomodoroCount + 1} of ${sessionsUntilLongBreak}`;
         }
         
-        // ==================== SETTINGS FUNCTIONS ====================
-        function updateSettings() {
-            // Update displayed values
-            focusValue.textContent = focusTimeInput.value;
-            breakValue.textContent = breakTimeInput.value;
-            longBreakValue.textContent = longBreakTimeInput.value;
-            sessionsValue.textContent = sessionsCountInput.value;
-            
-            // Update timer settings
-            focusTime = parseInt(focusTimeInput.value) * 60;
-            breakTime = parseInt(breakTimeInput.value) * 60;
-            longBreakTime = parseInt(longBreakTimeInput.value) * 60;
-            sessionsUntilLongBreak = parseInt(sessionsCountInput.value);
-            
-            // Apply changes if auto-apply is enabled or timer is not running
-            if (autoApplyCheckbox.checked || !isRunning) {
-                resetTimer();
-            }
-            
-            updatePomodoroCounter();
-            updateFullscreenPomodoroCounter();
-            saveToLocalStorage();
-        }
-        
-        function updateSettingsDisplay() {
-            focusTimeInput.value = focusTime / 60;
-            breakTimeInput.value = breakTime / 60;
-            longBreakTimeInput.value = longBreakTime / 60;
-            sessionsCountInput.value = sessionsUntilLongBreak;
-            
-            focusValue.textContent = focusTime / 60;
-            breakValue.textContent = breakTime / 60;
-            longBreakValue.textContent = longBreakTime / 60;
-            sessionsValue.textContent = sessionsUntilLongBreak;
-        }
-        
-        // ==================== FULLSCREEN FUNCTIONS ====================
-        function toggleFullscreen() {
-            if (isFullscreen) {
-                exitFullscreen();
-            } else {
-                enterFullscreen();
-            }
-        }
-        
-        function enterFullscreen() {
-            isFullscreen = true;
-            
-            // Show fullscreen overlay
-            fullscreenOverlay.classList.add('active');
-            fullscreenOverlay.className = 'active ' + document.body.className;
-            
-            // Update fullscreen display
-            updateFullscreenDisplay();
-            
-            // Show notification
-            fullscreenNotification.classList.add('show');
-            setTimeout(() => {
-                fullscreenNotification.classList.remove('show');
-            }, 3000);
-            
-            saveToLocalStorage();
-        }
-        
-        function exitFullscreen() {
-            isFullscreen = false;
-            
-            // Hide fullscreen overlay
-            fullscreenOverlay.classList.remove('active');
-            
-            saveToLocalStorage();
-        }
-        
-        // ==================== THEME FUNCTIONS ====================
-        function setTheme(theme) {
-            document.body.className = `${theme}-theme`;
-            if (isFullscreen) {
-                fullscreenOverlay.className = `active ${theme}-theme`;
-            }
-            saveToLocalStorage();
-        }
-        
         // ==================== STATS FUNCTIONS ====================
         function updateStats() {
             completedPomodorosEl.textContent = totalPomodoros;
@@ -2222,6 +3209,7 @@
             
             saveTask(task);
             renderTasks();
+            updateTasksPreview();
             taskInput.value = '';
             taskInput.focus();
         }
@@ -2246,7 +3234,15 @@
                 return;
             }
             
-            tasks.forEach(task => {
+            // Sort tasks: incomplete first, then by creation date
+            const sortedTasks = [...tasks].sort((a, b) => {
+                if (a.completed !== b.completed) {
+                    return a.completed ? 1 : -1;
+                }
+                return new Date(b.createdAt) - new Date(a.createdAt);
+            });
+            
+            sortedTasks.forEach(task => {
                 const li = document.createElement('li');
                 li.className = `task-item ${task.completed ? 'completed' : ''}`;
                 li.dataset.id = task.id;
@@ -2287,12 +3283,8 @@
                 btn.addEventListener('click', handleTaskDelete);
             });
             
-            // Make task text editable on click
+            // Make task text editable
             document.querySelectorAll('.task-text').forEach(taskText => {
-                taskText.addEventListener('click', function() {
-                    this.focus();
-                });
-                
                 taskText.addEventListener('blur', function() {
                     handleTaskTextEdit(this);
                 });
@@ -2324,6 +3316,7 @@
                 }
                 
                 updateStats();
+                updateTasksPreview();
                 e.target.closest('.task-item').classList.toggle('completed');
                 e.target.nextElementSibling.classList.toggle('completed');
                 saveToLocalStorage();
@@ -2364,6 +3357,7 @@
             if (taskIndex !== -1) {
                 tasks[taskIndex].text = newText;
                 localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
+                updateTasksPreview();
                 saveToLocalStorage();
             }
         }
@@ -2386,94 +3380,36 @@
             tasks.splice(taskIndex, 1);
             localStorage.setItem('pomodoram_tasks', JSON.stringify(tasks));
             renderTasks();
+            updateTasksPreview();
             saveToLocalStorage();
-        }
-        
-        // ==================== NOTIFICATION FUNCTIONS ====================
-        function showNotification() {
-            let message = '';
-            
-            if (currentMode === 'focus') {
-                message = pomodoroCount >= sessionsUntilLongBreak - 1 ? 
-                         'Great work! Time for a long break.' : 
-                         'Focus session complete! Take a short break.';
-            } else if (currentMode === 'break') {
-                message = 'Break is over! Time to focus.';
-            } else {
-                message = 'Long break finished! Ready for more focused work?';
-            }
-            
-            const notification = document.createElement('div');
-            notification.className = 'fullscreen-notification show';
-            notification.innerHTML = `<i class="fas fa-bell"></i><span>${message}</span>`;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 3000);
-        }
-        
-        function showTreeCompleteNotification() {
-            const notification = document.createElement('div');
-            notification.className = 'fullscreen-notification show';
-            notification.style.background = 'linear-gradient(135deg, #F59E0B, #FBBF24)';
-            notification.innerHTML = `<i class="fas fa-tree"></i><span>🌳 Beautiful! Your spruce tree is fully grown! 🌳</span>`;
-            document.body.appendChild(notification);
-            
-            setTimeout(() => {
-                notification.remove();
-            }, 5000);
-        }
-        
-        function playNotificationSound() {
-            try {
-                // Create a simple beep sound using Web Audio API
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = 800;
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 1);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 1);
-            } catch (e) {
-                // Audio not supported, silently fail
-            }
         }
         
         // ==================== KEYBOARD SHORTCUTS ====================
         function handleKeyboardShortcut(e) {
             if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
             
-            switch(e.key) {
+            switch(e.key.toLowerCase()) {
                 case ' ':
-                case 'Spacebar':
                     e.preventDefault();
                     toggleTimer();
                     break;
                 case 's':
-                case 'S':
                     e.preventDefault();
                     skipSession();
                     break;
                 case 'f':
-                case 'F':
                     e.preventDefault();
                     toggleFullscreen();
                     break;
-                case 'r':
-                case 'R':
+                case 'm':
                     e.preventDefault();
-                    resetTimer();
+                    if (isMusicPlaying) {
+                        pauseMusic();
+                    } else {
+                        playMusic();
+                    }
                     break;
-                case 'Escape':
+                case 'escape':
                     if (isFullscreen) {
                         exitFullscreen();
                     }
@@ -2490,7 +3426,6 @@
                 tasksCompleted,
                 pomodoroCount,
                 treeStage,
-                completedFocusSessions,
                 currentMode,
                 focusTime,
                 breakTime,
@@ -2499,6 +3434,13 @@
                 autoApply: autoApplyCheckbox.checked,
                 theme: document.body.className,
                 isFullscreen: isFullscreen,
+                // Music system data
+                musicVolume: volumeSlider.value,
+                currentTrackIndex: currentTrackIndex,
+                isMusicPlaying: isMusicPlaying,
+                isMusicLooping: isMusicLooping,
+                selectedAlarmSound: selectedAlarmSound,
+                lastReminderTime: lastReminderTime,
                 lastSave: new Date().toISOString()
             };
             
@@ -2509,51 +3451,64 @@
             const dataJson = localStorage.getItem('pomodoram_data');
             
             if (dataJson) {
-                const data = JSON.parse(dataJson);
-                
-                totalPomodoros = data.totalPomodoros || 0;
-                focusTimeToday = data.focusTimeToday || 0;
-                breakTimeToday = data.breakTimeToday || 0;
-                tasksCompleted = data.tasksCompleted || 0;
-                pomodoroCount = data.pomodoroCount || 0;
-                treeStage = data.treeStage || 0;
-                completedFocusSessions = data.completedFocusSessions || 0;
-                currentMode = data.currentMode || 'focus';
-                
-                // Load timer settings
-                if (data.focusTime) focusTime = data.focusTime;
-                if (data.breakTime) breakTime = data.breakTime;
-                if (data.longBreakTime) longBreakTime = data.longBreakTime;
-                if (data.sessionsUntilLongBreak) sessionsUntilLongBreak = data.sessionsUntilLongBreak;
-                
-                // Load settings
-                if (data.autoApply !== undefined) {
-                    autoApplyCheckbox.checked = data.autoApply;
-                }
-                
-                // Load theme
-                if (data.theme) {
-                    document.body.className = data.theme;
-                    themeButtons.forEach(btn => {
-                        btn.classList.remove('active');
-                        if (btn.dataset.theme === data.theme.replace('-theme', '')) {
-                            btn.classList.add('active');
-                        }
-                    });
-                }
-                
-                // Load fullscreen state
-                if (data.isFullscreen) {
-                    setTimeout(() => {
-                        enterFullscreen();
-                    }, 100);
-                }
-                
-                // Load tasks
-                const tasksJson = localStorage.getItem('pomodoram_tasks');
-                if (tasksJson) {
-                    const tasks = JSON.parse(tasksJson);
-                    tasksCompleted = tasks.filter(task => task.completed).length;
+                try {
+                    const data = JSON.parse(dataJson);
+                    
+                    totalPomodoros = data.totalPomodoros || 0;
+                    focusTimeToday = data.focusTimeToday || 0;
+                    breakTimeToday = data.breakTimeToday || 0;
+                    tasksCompleted = data.tasksCompleted || 0;
+                    pomodoroCount = data.pomodoroCount || 0;
+                    treeStage = data.treeStage || 0;
+                    currentMode = data.currentMode || 'focus';
+                    
+                    // Load timer settings
+                    if (data.focusTime) focusTime = data.focusTime;
+                    if (data.breakTime) breakTime = data.breakTime;
+                    if (data.longBreakTime) longBreakTime = data.longBreakTime;
+                    if (data.sessionsUntilLongBreak) sessionsUntilLongBreak = data.sessionsUntilLongBreak;
+                    
+                    // Load settings
+                    if (data.autoApply !== undefined) {
+                        autoApplyCheckbox.checked = data.autoApply;
+                    }
+                    
+                    // Load theme
+                    if (data.theme) {
+                        document.body.className = data.theme;
+                        themeButtons.forEach(btn => {
+                            btn.classList.remove('active');
+                            if (btn.dataset.theme === data.theme.replace('-theme', '')) {
+                                btn.classList.add('active');
+                            }
+                        });
+                    }
+                    
+                    // Load music system data
+                    if (data.musicVolume) volumeSlider.value = data.musicVolume;
+                    if (data.currentTrackIndex !== undefined) currentTrackIndex = data.currentTrackIndex;
+                    if (data.isMusicPlaying !== undefined) isMusicPlaying = data.isMusicPlaying;
+                    if (data.isMusicLooping !== undefined) isMusicLooping = data.isMusicLooping;
+                    if (data.selectedAlarmSound) selectedAlarmSound = data.selectedAlarmSound;
+                    if (data.lastReminderTime) lastReminderTime = data.lastReminderTime;
+                    
+                    // Load fullscreen state
+                    if (data.isFullscreen) {
+                        setTimeout(() => {
+                            enterFullscreen();
+                        }, 100);
+                    }
+                    
+                    // Load tasks
+                    const tasksJson = localStorage.getItem('pomodoram_tasks');
+                    if (tasksJson) {
+                        const tasks = JSON.parse(tasksJson);
+                        tasksCompleted = tasks.filter(task => task.completed).length;
+                    }
+                    
+                    console.log("Loaded from localStorage successfully");
+                } catch (e) {
+                    console.error("Error loading from localStorage:", e);
                 }
             } else {
                 // Default values
