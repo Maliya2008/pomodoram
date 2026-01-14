@@ -919,7 +919,7 @@
             color: white;
         }
 
-        /* Music Panel - UPDATED */
+        /* Music Panel - Spotify */
         .music-panel {
             background: rgba(30, 41, 59, 0.8);
             backdrop-filter: blur(10px);
@@ -937,239 +937,11 @@
             background: rgba(255, 255, 255, 0.1);
         }
 
-        .music-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 25px;
-        }
-
-        .mood-suggestion {
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            font-style: italic;
-            text-align: right;
-            max-width: 60%;
-        }
-
-        .music-controls {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 25px;
-            flex-wrap: wrap;
-        }
-
-        .music-btn {
-            flex: 1;
-            min-width: 120px;
-            padding: 14px;
-            border: none;
+        .spotify-player {
+            width: 100%;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--text-light);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-
-        body.light-theme .music-btn {
-            background: rgba(0, 0, 0, 0.05);
-            color: var(--text-dark);
-        }
-
-        .music-btn:hover {
-            background: var(--primary);
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .music-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .music-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        /* Android Style Volume Slider - Desktop Only */
-        .volume-container {
-            margin: 25px 0;
-            display: block;
-        }
-
-        @media (max-width: 768px) {
-            .volume-container {
-                display: none; /* Hide on mobile */
-            }
-        }
-
-        .volume-label {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
-        body.light-theme .volume-label {
-            color: var(--text-dark);
-        }
-
-        .android-volume-slider {
-            -webkit-appearance: slider-vertical;
-            width: 40px;
-            height: 120px;
-            background: transparent;
-            outline: none;
-            margin: 0 auto;
-            display: block;
-            cursor: pointer;
-        }
-
-        .android-volume-slider::-webkit-slider-runnable-track {
-            width: 6px;
-            height: 100%;
-            background: linear-gradient(to top, var(--primary), #E2E8F0);
-            border-radius: 3px;
-            margin: 0 auto;
-        }
-
-        .android-volume-slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid var(--primary);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-            margin-left: -9px;
-        }
-
-        .android-volume-slider::-moz-range-track {
-            width: 6px;
-            height: 100%;
-            background: linear-gradient(to top, var(--primary), #E2E8F0);
-            border-radius: 3px;
-        }
-
-        .android-volume-slider::-moz-range-thumb {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            background: white;
-            border: 3px solid var(--primary);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-            cursor: pointer;
-        }
-
-        /* Mobile Volume Control (Simplified) */
-        .mobile-volume-control {
-            display: none;
-            margin: 15px 0;
-        }
-
-        @media (max-width: 768px) {
-            .mobile-volume-control {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
-            
-            .mobile-volume-slider {
-                flex: 1;
-                height: 6px;
-                border-radius: 3px;
-                background: rgba(255, 255, 255, 0.1);
-                outline: none;
-                -webkit-appearance: none;
-            }
-            
-            .mobile-volume-slider::-webkit-slider-thumb {
-                -webkit-appearance: none;
-                width: 20px;
-                height: 20px;
-                border-radius: 50%;
-                background: var(--primary);
-                cursor: pointer;
-            }
-        }
-
-        /* Track Selection */
-        .track-selector {
+            overflow: hidden;
             margin-top: 20px;
-        }
-
-        .track-item {
-            padding: 15px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        body.light-theme .track-item {
-            background: rgba(0, 0, 0, 0.03);
-        }
-
-        .track-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-2px);
-        }
-
-        body.light-theme .track-item:hover {
-            background: rgba(0, 0, 0, 0.05);
-        }
-
-        .track-item.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        .track-item.playing {
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-            0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
-            70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-        }
-
-        .track-info {
-            flex: 1;
-        }
-
-        .track-title {
-            font-weight: 600;
-            margin-bottom: 4px;
-            font-size: 1rem;
-        }
-
-        .track-mood {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-        }
-
-        .track-item.active .track-mood {
-            color: rgba(255, 255, 255, 0.8);
-        }
-
-        .track-icon {
-            font-size: 1.2rem;
-            width: 30px;
-            text-align: center;
         }
 
         /* Tasks Panel in Sidebar */
@@ -1936,66 +1708,37 @@
             </main>
 
             <div class="sidebar">
-                <!-- Music Panel -->
-                <div class="panel music-panel">
-                    <div class="music-header">
-                        <h2 class="panel-title"><i class="fas fa-music"></i> Study Music</h2>
-                        <span class="mood-suggestion" id="mood-suggestion">For Focus</span>
-                    </div>
+                <!-- REORDERED: 1st Tasks Panel -->
+                <div class="panel tasks-panel">
+                    <h2 class="panel-title"><i class="fas fa-tasks"></i> Task List</h2>
                     
-                    <div class="music-controls">
-                        <button class="music-btn" id="music-play-btn">
-                            <i class="fas fa-play"></i> Play
-                        </button>
-                        <button class="music-btn" id="music-pause-btn" disabled>
-                            <i class="fas fa-pause"></i> Pause
-                        </button>
-                        <button class="music-btn" id="music-next-btn">
-                            <i class="fas fa-forward"></i> Next
-                        </button>
-                        <button class="music-btn" id="music-loop-btn">
-                            <i class="fas fa-redo"></i> Loop
+                    <div class="task-input-container">
+                        <input type="text" class="task-input" id="task-input" placeholder="Add a new task...">
+                        <button class="add-task-btn" id="add-task-btn">
+                            <i class="fas fa-plus"></i>
                         </button>
                     </div>
 
-                    <!-- Desktop Volume Slider (Android style) -->
-                    <div class="volume-container">
-                        <div class="volume-label">
-                            <span>Volume</span>
-                            <span id="volume-value">70%</span>
-                        </div>
-                        <input type="range" class="android-volume-slider" id="volume-slider" 
-                               min="0" max="100" value="70" step="1">
-                    </div>
+                    <ul class="tasks-list" id="tasks-list"></ul>
+                </div>
 
-                    <!-- Mobile Volume Control (Simplified) -->
-                    <div class="mobile-volume-control">
-                        <i class="fas fa-volume-up"></i>
-                        <input type="range" class="mobile-volume-slider" id="mobile-volume-slider" 
-                               min="0" max="100" value="70" step="1">
-                        <span id="mobile-volume-value">70%</span>
-                    </div>
-
-                    <!-- Track Selection -->
-                    <div class="track-selector">
-                        <div class="track-item active" data-track="0">
-                            <div class="track-icon"><i class="fas fa-play-circle"></i></div>
-                            <div class="track-info">
-                                <div class="track-title">Rainy Lofi Hiphop</div>
-                                <div class="track-mood">Calm • Focus • Relaxed</div>
-                            </div>
-                        </div>
-                        <div class="track-item" data-track="1">
-                            <div class="track-icon"><i class="fas fa-play-circle"></i></div>
-                            <div class="track-info">
-                                <div class="track-title">Seaside Haven</div>
-                                <div class="track-mood">Peaceful • Ambient • Creative</div>
-                            </div>
-                        </div>
+                <!-- REORDERED: 2nd Music Panel -->
+                <div class="panel music-panel">
+                    <h2 class="panel-title"><i class="fas fa-music"></i> Study Music</h2>
+                    <div class="spotify-player">
+                        <iframe
+                            style="border-radius:12px"
+                            src="https://open.spotify.com/embed/playlist/351LrlEyDvMCXzWJbDIs2p?utm_source=generator&theme=0"
+                            width="100%"
+                            height="380"
+                            frameBorder="0"
+                            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                            loading="lazy">
+                        </iframe>
                     </div>
                 </div>
 
-                <!-- Settings Panel -->
+                <!-- REORDERED: 3rd Settings Panel -->
                 <div class="panel settings-panel">
                     <h2 class="panel-title"><i class="fas fa-cog"></i> Timer Settings</h2>
                     
@@ -2030,7 +1773,7 @@
                     <div class="alarm-selector">
                         <label>Alarm Sound</label>
                         <div class="alarm-buttons" id="alarm-buttons">
-                            <!-- Generated by JavaScript -->
+                            <!-- Alarm buttons will be generated by JavaScript -->
                         </div>
                     </div>
 
@@ -2038,20 +1781,6 @@
                         <input type="checkbox" id="auto-apply" checked>
                         <label for="auto-apply">Apply changes immediately</label>
                     </div>
-                </div>
-
-                <!-- Tasks Panel -->
-                <div class="panel tasks-panel">
-                    <h2 class="panel-title"><i class="fas fa-tasks"></i> Task List</h2>
-                    
-                    <div class="task-input-container">
-                        <input type="text" class="task-input" id="task-input" placeholder="Add a new task...">
-                        <button class="add-task-btn" id="add-task-btn">
-                            <i class="fas fa-plus"></i>
-                        </button>
-                    </div>
-
-                    <ul class="tasks-list" id="tasks-list"></ul>
                 </div>
             </div>
         </div>
@@ -2062,7 +1791,6 @@
                 <span class="key">Space</span> Start/Pause •
                 <span class="key">S</span> Skip •
                 <span class="key">F</span> Fullscreen •
-                <span class="key">M</span> Toggle Music •
                 <span class="key">ESC</span> Exit Fullscreen
             </div>
         </footer>
@@ -2088,36 +1816,8 @@
         let longBreakTime = 15 * 60;
         let sessionsUntilLongBreak = 4;
         
-        // FIXED: Music System Variables with proper Google Drive links
-        let audioPlayer = new Audio();
-        let isMusicPlaying = false;
-        let isMusicLooping = false;
-        let currentTrackIndex = 0;
-        let musicTracks = [
-            {
-                title: "Rainy Lofi Hiphop",
-                mood: ["Calm", "Focus", "Relaxed"],
-                // FIXED: Correct Google Drive streaming link format
-                url: "https://docs.google.com/uc?export=download&id=1dHorR6HZ6t3qlgb6Aqh_3KKcvy2X1En_",
-                altUrl: "https://drive.google.com/uc?export=download&id=1dHorR6HZ6t3qlgb6Aqh_3KKcvy2X1En_",
-                type: "audio/mpeg"
-            },
-            {
-                title: "Seaside Haven",
-                mood: ["Peaceful", "Ambient", "Creative"],
-                url: "https://docs.google.com/uc?export=download&id=13DdWPsNB1Ky0E9hoVslgcxUIZy_sDcvW",
-                altUrl: "https://drive.google.com/uc?export=download&id=13DdWPsNB1Ky0E9hoVslgcxUIZy_sDcvW",
-                type: "audio/mpeg"
-            }
-        ];
-        
-        // Alarm Sounds
-        let alarmSounds = [
-            { name: "Classic Beep", type: "beep" },
-            { name: "Gentle Chime", type: "chime" },
-            { name: "Digital Bell", type: "bell" },
-            { name: "Soft Notification", type: "soft" }
-        ];
+        // Alarm Sounds - Using Web Audio API for reliable sound
+        let alarmSounds = [];
         let selectedAlarmSound = "beep";
         
         // Task Reminder
@@ -2140,7 +1840,7 @@
         const progressRingFill = document.querySelector('.progress-ring-fill');
         const timeProgress = document.getElementById('time-progress');
         
-        // NEW: Tasks Preview Elements
+        // Tasks Preview Elements
         const tasksPreviewList = document.getElementById('tasks-preview-list');
         const viewAllTasksBtn = document.getElementById('view-all-tasks-btn');
         
@@ -2185,18 +1885,53 @@
         const addTaskBtn = document.getElementById('add-task-btn');
         const tasksList = document.getElementById('tasks-list');
         
-        // Music DOM Elements
-        const musicPlayBtn = document.getElementById('music-play-btn');
-        const musicPauseBtn = document.getElementById('music-pause-btn');
-        const musicNextBtn = document.getElementById('music-next-btn');
-        const musicLoopBtn = document.getElementById('music-loop-btn');
-        const volumeSlider = document.getElementById('volume-slider');
-        const mobileVolumeSlider = document.getElementById('mobile-volume-slider');
-        const volumeValue = document.getElementById('volume-value');
-        const mobileVolumeValue = document.getElementById('mobile-volume-value');
-        const moodSuggestion = document.getElementById('mood-suggestion');
-        const trackItems = document.querySelectorAll('.track-item');
+        // Alarm buttons container
         const alarmButtonsContainer = document.getElementById('alarm-buttons');
+        
+        // ==================== SOUND FUNCTIONS ====================
+        // Create beep sound using Web Audio API
+        function createBeepSound(frequency, duration, volume) {
+            return {
+                play: function() {
+                    try {
+                        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                        const oscillator = audioContext.createOscillator();
+                        const gainNode = audioContext.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(audioContext.destination);
+                        
+                        oscillator.frequency.value = frequency;
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                        
+                        oscillator.start(audioContext.currentTime);
+                        oscillator.stop(audioContext.currentTime + duration);
+                    } catch (e) {
+                        console.log("Web Audio API not supported, using fallback");
+                        // Fallback: Create an HTML audio element
+                        const audio = new Audio();
+                        const context = new (window.AudioContext || window.webkitAudioContext)();
+                        const oscillator = context.createOscillator();
+                        const gainNode = context.createGain();
+                        
+                        oscillator.connect(gainNode);
+                        gainNode.connect(context.destination);
+                        
+                        oscillator.frequency.value = frequency;
+                        oscillator.type = 'sine';
+                        
+                        gainNode.gain.setValueAtTime(volume, context.currentTime);
+                        gainNode.gain.exponentialRampToValueAtTime(0.001, context.currentTime + duration);
+                        
+                        oscillator.start(context.currentTime);
+                        oscillator.stop(context.currentTime + duration);
+                    }
+                }
+            };
+        }
         
         // ==================== INITIALIZATION ====================
         function init() {
@@ -2212,21 +1947,15 @@
             updateSessionInfo();
             updateStats();
             renderTasks();
-            updateTasksPreview(); // NEW: Update tasks preview
+            updateTasksPreview();
             setupEventListeners();
             updateSettingsDisplay();
             
-            // Initialize Music System
-            initMusicSystem();
-            
-            // Initialize Alarm Sounds Selector
+            // Initialize Alarm Sounds
             initAlarmSounds();
             
             // Start 2-hour Task Reminder Check
             startTaskReminder();
-            
-            // Update Mood Suggestion
-            updateMoodSuggestion();
             
             console.log("Pomodoram initialized successfully!");
         }
@@ -2345,9 +2074,6 @@
                 }
             });
             
-            // Update mood suggestion
-            updateMoodSuggestion();
-            
             resetTimer();
             saveToLocalStorage();
         }
@@ -2453,7 +2179,7 @@
             }
         }
         
-        // ==================== TREE FUNCTIONS (IMPROVED) ====================
+        // ==================== TREE FUNCTIONS ====================
         function updateTree() {
             // Clear existing tree layers and top
             const existingLayers = tree.querySelectorAll('.tree-layer');
@@ -2535,247 +2261,116 @@
             }
         }
         
-        // ==================== FIXED MUSIC SYSTEM ====================
-        function initMusicSystem() {
-            console.log("Initializing music system...");
-            
-            // Set initial volume
-            audioPlayer.volume = volumeSlider.value / 100;
-            
-            // Set initial volume display
-            updateVolumeDisplay();
-            
-            // Update music buttons
-            updateMusicButtons();
-            
-            // Set loop button state
-            musicLoopBtn.classList.toggle('active', isMusicLooping);
-            
-            // Load first track
-            loadTrack(currentTrackIndex);
-            
-            console.log("Music system initialized");
-        }
-        
-        function loadTrack(index, retryCount = 0) {
-            if (index >= 0 && index < musicTracks.length) {
-                console.log(`Loading track ${index}: ${musicTracks[index].title}`);
-                currentTrackIndex = index;
-                
-                const track = musicTracks[index];
-                
-                // Stop current audio if playing
-                if (isMusicPlaying) {
-                    audioPlayer.pause();
-                }
-                
-                // Create a new audio object
-                const newAudio = new Audio();
-                
-                // Determine which URL to try
-                let urlToTry;
-                if (retryCount === 0) {
-                    urlToTry = track.url;
-                } else if (retryCount === 1 && track.altUrl) {
-                    urlToTry = track.altUrl;
-                } else {
-                    // All attempts failed, use fallback
-                    useFallbackMusic(index);
-                    return;
-                }
-                
-                console.log(`Attempt ${retryCount + 1}: Loading from ${urlToTry}`);
-                
-                // Set up event listeners
-                newAudio.addEventListener('canplaythrough', function() {
-                    console.log(`Successfully loaded: ${track.title}`);
-                    audioPlayer = newAudio;
-                    updateTrackIcons();
-                    
-                    // Auto-play if music was playing before
-                    if (isMusicPlaying) {
-                        newAudio.play().then(() => {
-                            console.log("Track resumed playing");
-                        }).catch(e => {
-                            console.error("Auto-play failed:", e);
-                            // User interaction might be required
-                            isMusicPlaying = false;
-                            updateMusicButtons();
-                        });
-                    }
-                });
-                
-                newAudio.addEventListener('error', function(e) {
-                    console.error(`Error loading track (attempt ${retryCount + 1}):`, e);
-                    // Try again with alternate URL
-                    if (retryCount < 2) {
-                        setTimeout(() => loadTrack(index, retryCount + 1), 500);
-                    } else {
-                        useFallbackMusic(index);
-                    }
-                });
-                
-                newAudio.addEventListener('ended', handleTrackEnd);
-                
-                // Set audio properties
-                newAudio.src = urlToTry;
-                newAudio.volume = audioPlayer.volume;
-                newAudio.loop = isMusicLooping;
-                
-                // Update UI
-                trackItems.forEach((item, i) => {
-                    item.classList.toggle('active', i === currentTrackIndex);
-                    if (i === currentTrackIndex) {
-                        item.classList.add('playing');
-                    } else {
-                        item.classList.remove('playing');
-                    }
-                });
-                
-                // Update mood suggestion
-                updateMoodSuggestion();
-            }
-        }
-        
-        function useFallbackMusic(index) {
-            console.log("Using fallback music...");
-            const fallbackTracks = [
-                {
-                    title: "Relaxing Study Music",
-                    mood: ["Calm", "Focus", "Relaxed"],
-                    url: "https://assets.mixkit.co/music/preview/mixkit-driving-ambition-32.mp3",
-                    type: "audio/mpeg"
+        // ==================== ALARM SOUNDS SYSTEM ====================
+        function initAlarmSounds() {
+            // Initialize alarm sounds
+            alarmSounds = [
+                { 
+                    name: "Classic Beep", 
+                    type: "beep",
+                    play: function() { playBeep(800, 0.5, 0.5); }
                 },
-                {
-                    title: "Ambient Background",
-                    mood: ["Peaceful", "Ambient", "Creative"],
-                    url: "https://assets.mixkit.co/music/preview/mixkit-deep-urban-623.mp3",
-                    type: "audio/mpeg"
+                { 
+                    name: "Gentle Chime", 
+                    type: "chime",
+                    play: function() { playChime(); }
+                },
+                { 
+                    name: "Digital Bell", 
+                    type: "bell",
+                    play: function() { playBell(); }
+                },
+                { 
+                    name: "Soft Notification", 
+                    type: "soft",
+                    play: function() { playSoftNotification(); }
                 }
             ];
             
-            if (index < fallbackTracks.length) {
-                // Replace the track with fallback
-                musicTracks[index] = {
-                    ...musicTracks[index],
-                    url: fallbackTracks[index].url,
-                    isFallback: true
-                };
-                
-                showNotification("Using fallback music. Your tracks will be available soon.", "info");
-                
-                // Retry loading
-                setTimeout(() => loadTrack(index, 0), 500);
-            }
-        }
-        
-        function playMusic() {
-            console.log("Playing music...");
-            
-            if (!audioPlayer.src) {
-                loadTrack(currentTrackIndex);
-                setTimeout(() => playMusic(), 500);
-                return;
-            }
-            
-            audioPlayer.play().then(() => {
-                isMusicPlaying = true;
-                updateMusicButtons();
-                updateTrackIcons();
-                console.log("Music playing successfully");
-            }).catch(e => {
-                console.error("Error playing audio:", e);
-                showNotification("Click play again to start music. Some browsers require user interaction.", "info");
-                isMusicPlaying = false;
-                updateMusicButtons();
+            // Create alarm buttons
+            alarmButtonsContainer.innerHTML = '';
+            alarmSounds.forEach((sound, index) => {
+                const button = document.createElement('button');
+                button.className = `alarm-btn ${sound.type === selectedAlarmSound ? 'active' : ''}`;
+                button.innerHTML = `<i class="fas fa-volume-up"></i> ${sound.name}`;
+                button.dataset.sound = sound.type;
+                button.addEventListener('click', () => selectAlarmSound(sound.type));
+                alarmButtonsContainer.appendChild(button);
             });
         }
         
-        function pauseMusic() {
-            console.log("Pausing music...");
-            audioPlayer.pause();
-            isMusicPlaying = false;
-            updateMusicButtons();
-            updateTrackIcons();
-        }
-        
-        function nextTrack() {
-            console.log("Next track...");
-            let nextIndex = (currentTrackIndex + 1) % musicTracks.length;
-            loadTrack(nextIndex);
-            if (isMusicPlaying) {
-                setTimeout(() => playMusic(), 300);
-            }
-        }
-        
-        function toggleLoop() {
-            isMusicLooping = !isMusicLooping;
-            audioPlayer.loop = isMusicLooping;
-            musicLoopBtn.classList.toggle('active', isMusicLooping);
-            musicLoopBtn.innerHTML = `<i class="fas fa-redo"></i> ${isMusicLooping ? 'Looping' : 'Loop'}`;
+        function selectAlarmSound(soundType) {
+            selectedAlarmSound = soundType;
+            
+            // Update UI
+            document.querySelectorAll('.alarm-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.dataset.sound === soundType);
+            });
+            
+            // Test the sound
+            testAlarmSound();
+            
             saveToLocalStorage();
         }
         
-        function handleTrackEnd() {
-            console.log("Track ended");
-            if (!isMusicLooping) {
-                nextTrack();
-                if (isMusicPlaying) {
-                    setTimeout(() => playMusic(), 300);
-                }
+        function testAlarmSound() {
+            const sound = alarmSounds.find(s => s.type === selectedAlarmSound);
+            if (sound && sound.play) {
+                sound.play();
             }
         }
         
-        function updateMusicButtons() {
-            musicPlayBtn.disabled = isMusicPlaying;
-            musicPauseBtn.disabled = !isMusicPlaying;
-            musicPlayBtn.innerHTML = `<i class="fas fa-play"></i> ${isMusicPlaying ? 'Playing' : 'Play'}`;
+        function playAlarmSound() {
+            const sound = alarmSounds.find(s => s.type === selectedAlarmSound);
+            if (sound && sound.play) {
+                sound.play();
+            }
         }
         
-        function updateTrackIcons() {
-            trackItems.forEach((item, i) => {
-                const icon = item.querySelector('.track-icon i');
-                if (icon) {
-                    if (i === currentTrackIndex && isMusicPlaying) {
-                        icon.className = 'fas fa-pause-circle';
-                        item.classList.add('playing');
-                    } else {
-                        icon.className = 'fas fa-play-circle';
-                        item.classList.remove('playing');
-                    }
-                }
-            });
+        // Sound generation functions
+        function playBeep(frequency, duration, volume) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration);
+            } catch (e) {
+                // Fallback: Use simple beep with HTML audio
+                const audio = new Audio();
+                audio.src = "data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAZGF0YQQAAAAAAA==";
+                audio.play().catch(() => {
+                    // If all else fails, just log
+                    console.log("Beep!");
+                });
+            }
         }
         
-        function updateVolumeDisplay() {
-            const volume = volumeSlider.value;
-            volumeValue.textContent = `${volume}%`;
-            if (mobileVolumeValue) {
-                mobileVolumeValue.textContent = `${volume}%`;
-            }
-            if (mobileVolumeSlider) {
-                mobileVolumeSlider.value = volume;
-            }
-            audioPlayer.volume = volume / 100;
+        function playChime() {
+            playBeep(523.25, 0.3, 0.3); // C5
+            setTimeout(() => playBeep(659.25, 0.3, 0.3), 100); // E5
+            setTimeout(() => playBeep(783.99, 0.5, 0.3), 200); // G5
         }
         
-        function updateMoodSuggestion() {
-            let suggestion = "";
-            const track = musicTracks[currentTrackIndex];
-            const trackMood = track ? track.mood.join(" • ") : "";
-            
-            switch(currentMode) {
-                case 'focus':
-                    suggestion = `For Focus • ${trackMood}`;
-                    break;
-                case 'break':
-                    suggestion = `For Relaxation • ${trackMood}`;
-                    break;
-                case 'longBreak':
-                    suggestion = `For Recharging • ${trackMood}`;
-                    break;
-            }
-            moodSuggestion.textContent = suggestion;
+        function playBell() {
+            playBeep(784, 0.1, 0.5);
+            setTimeout(() => playBeep(784, 0.1, 0.4), 150);
+            setTimeout(() => playBeep(784, 0.1, 0.3), 300);
+        }
+        
+        function playSoftNotification() {
+            playBeep(440, 0.2, 0.2);
+            setTimeout(() => playBeep(440, 0.2, 0.1), 100);
         }
         
         // ==================== TASKS PREVIEW FUNCTIONS ====================
@@ -2863,7 +2458,6 @@
                         modeButtons.forEach(b => b.classList.remove('active'));
                         this.classList.add('active');
                         currentMode = this.dataset.mode;
-                        updateMoodSuggestion();
                         resetTimer();
                     }
                 });
@@ -2884,46 +2478,6 @@
             breakTimeInput.addEventListener('input', updateSettings);
             longBreakTimeInput.addEventListener('input', updateSettings);
             sessionsCountInput.addEventListener('input', updateSettings);
-            
-            // Music System Listeners
-            musicPlayBtn.addEventListener('click', playMusic);
-            musicPauseBtn.addEventListener('click', pauseMusic);
-            musicNextBtn.addEventListener('click', nextTrack);
-            musicLoopBtn.addEventListener('click', toggleLoop);
-            
-            // Volume sliders
-            volumeSlider.addEventListener('input', function() {
-                updateVolumeDisplay();
-                saveToLocalStorage();
-            });
-            
-            if (mobileVolumeSlider) {
-                mobileVolumeSlider.addEventListener('input', function() {
-                    volumeSlider.value = this.value;
-                    updateVolumeDisplay();
-                    saveToLocalStorage();
-                });
-            }
-            
-            // Track selection
-            trackItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    const trackIndex = parseInt(this.dataset.track);
-                    if (currentTrackIndex !== trackIndex) {
-                        loadTrack(trackIndex);
-                        if (isMusicPlaying) {
-                            setTimeout(() => playMusic(), 300);
-                        }
-                    } else {
-                        // Toggle play/pause if clicking the current track
-                        if (isMusicPlaying) {
-                            pauseMusic();
-                        } else {
-                            playMusic();
-                        }
-                    }
-                });
-            });
             
             // Task management
             addTaskBtn.addEventListener('click', addTask);
@@ -2985,7 +2539,7 @@
             fullscreenNotification.classList.add('show');
             setTimeout(() => {
                 fullscreenNotification.classList.remove('show');
-            }, 5000); // FIXED: 5 seconds
+            }, 5000);
         }
         
         function checkMobileView() {
@@ -3040,72 +2594,6 @@
             sessionsValue.textContent = sessionsUntilLongBreak;
         }
         
-        // ==================== ALARM SOUNDS SYSTEM ====================
-        function initAlarmSounds() {
-            alarmButtonsContainer.innerHTML = '';
-            alarmSounds.forEach((sound, index) => {
-                const button = document.createElement('button');
-                button.className = `alarm-btn ${sound.type === selectedAlarmSound ? 'active' : ''}`;
-                button.textContent = sound.name;
-                button.dataset.sound = sound.type;
-                button.addEventListener('click', () => selectAlarmSound(sound.type));
-                alarmButtonsContainer.appendChild(button);
-            });
-        }
-        
-        function selectAlarmSound(soundType) {
-            selectedAlarmSound = soundType;
-            
-            // Update UI
-            document.querySelectorAll('.alarm-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.sound === soundType);
-            });
-            
-            // Test the sound
-            playAlarmSound();
-            
-            saveToLocalStorage();
-        }
-        
-        function playAlarmSound() {
-            switch(selectedAlarmSound) {
-                case 'beep':
-                    playBeepSound(800, 0.3, 1);
-                    break;
-                case 'chime':
-                    playBeepSound(600, 0.2, 2);
-                    break;
-                case 'bell':
-                    playBeepSound(400, 0.4, 0.5);
-                    break;
-                case 'soft':
-                    playBeepSound(1000, 0.1, 1.5);
-                    break;
-            }
-        }
-        
-        function playBeepSound(freq, volume, duration) {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = freq;
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + duration);
-            } catch (e) {
-                console.log("Beep!");
-            }
-        }
-        
         // ==================== TASK REMINDER SYSTEM ====================
         function startTaskReminder() {
             // Check every minute if 2 hours have passed
@@ -3129,7 +2617,7 @@
             }
         }
         
-        // ==================== NOTIFICATION FUNCTIONS (FIXED to 5 seconds) ====================
+        // ==================== NOTIFICATION FUNCTIONS ====================
         function showNotification(message, type = "info") {
             // Remove any existing notifications
             const existingNotifications = document.querySelectorAll('.fullscreen-notification.show');
@@ -3140,7 +2628,7 @@
             notification.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-triangle' : 'bell'}"></i><span>${message}</span>`;
             document.body.appendChild(notification);
             
-            // FIXED: Remove after 5 seconds
+            // Remove after 5 seconds
             setTimeout(() => {
                 if (notification.parentNode) {
                     notification.remove();
@@ -3401,14 +2889,6 @@
                     e.preventDefault();
                     toggleFullscreen();
                     break;
-                case 'm':
-                    e.preventDefault();
-                    if (isMusicPlaying) {
-                        pauseMusic();
-                    } else {
-                        playMusic();
-                    }
-                    break;
                 case 'escape':
                     if (isFullscreen) {
                         exitFullscreen();
@@ -3434,11 +2914,6 @@
                 autoApply: autoApplyCheckbox.checked,
                 theme: document.body.className,
                 isFullscreen: isFullscreen,
-                // Music system data
-                musicVolume: volumeSlider.value,
-                currentTrackIndex: currentTrackIndex,
-                isMusicPlaying: isMusicPlaying,
-                isMusicLooping: isMusicLooping,
                 selectedAlarmSound: selectedAlarmSound,
                 lastReminderTime: lastReminderTime,
                 lastSave: new Date().toISOString()
@@ -3484,11 +2959,7 @@
                         });
                     }
                     
-                    // Load music system data
-                    if (data.musicVolume) volumeSlider.value = data.musicVolume;
-                    if (data.currentTrackIndex !== undefined) currentTrackIndex = data.currentTrackIndex;
-                    if (data.isMusicPlaying !== undefined) isMusicPlaying = data.isMusicPlaying;
-                    if (data.isMusicLooping !== undefined) isMusicLooping = data.isMusicLooping;
+                    // Load alarm sound
                     if (data.selectedAlarmSound) selectedAlarmSound = data.selectedAlarmSound;
                     if (data.lastReminderTime) lastReminderTime = data.lastReminderTime;
                     
