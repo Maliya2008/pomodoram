@@ -1534,9 +1534,25 @@
             text-align: center;
             margin-top: 25px;
             padding: 15px 10px;
-            color: var(--text-gray);
+            background-color:var(--text-gray);
+            color: var(--text-light);
             font-size: 0.8rem;
             width: 100%;
+            border-radius: 10px;
+        }
+
+        #list{
+            list-style: none;
+        }
+
+        #list li{
+            display: inline;
+            margin-inline: 5px;
+        }
+        
+        #list li a{
+            text-decoration: none;
+            color: var(--text-light);
         }
 
         .hotkeys {
@@ -1882,6 +1898,15 @@
                 <span class="key">S</span> Skip •
                 <span class="key">F</span> Fullscreen •
                 <span class="key">ESC</span> Exit Fullscreen
+            </div>
+
+            <br>
+            <div id="nav">
+                <ul id="list">
+                    <li><a href="\about us.html" target="_blank">About us</a></li>
+                    <li><a href="\privacy.html" target="_blank">privacy policy</a></li>
+                    <li><a href="\terms.html" target="_blank">Terms and conditions</a></li>
+                </ul>
             </div>
         </footer>
     </div>
@@ -3081,4 +3106,5 @@
     </script>
 </body>
 </html>
+
 
