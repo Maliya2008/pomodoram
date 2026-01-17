@@ -48,12 +48,6 @@
             --text-gray: #64748B;
             --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --trunk-color: #8B4513;
-            --tree-green-1: #2E7D32;
-            --tree-green-2: #388E3C;
-            --tree-green-3: #43A047;
-            --tree-green-4: #4CAF50;
-            --tree-green-5: #66BB6A;
         }
 
         body {
@@ -344,140 +338,6 @@
             z-index: 2;
             position: relative;
             text-align: center;
-        }
-
-        /* Tree Visualization - Mobile Optimized */
-        .tree-container {
-            position: absolute;
-            width: 160px;
-            height: 160px;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        @media (max-width: 360px) {
-            .tree-container {
-                width: 140px;
-                height: 140px;
-                bottom: 30px;
-            }
-        }
-
-        .tree {
-            position: relative;
-            width: 100px;
-            height: 130px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .trunk {
-            width: 12px;
-            height: 40px;
-            background: var(--trunk-color);
-            border-radius: 3px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 
-                inset 2px 0 0 rgba(255, 255, 255, 0.1),
-                inset -2px 0 0 rgba(0, 0, 0, 0.3),
-                0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .trunk:before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 3px;
-            right: 3px;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-            border-radius: 2px;
-        }
-
-        .tree-layer {
-            position: absolute;
-            border-radius: 50% 50% 40% 40%;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 2;
-            box-shadow: 
-                inset 0 0 15px rgba(0, 0, 0, 0.3),
-                0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .tree-layer.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .tree-layer-1 {
-            width: 120px;
-            height: 45px;
-            bottom: 40px;
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-1), #1B5E20);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .tree-layer-2 {
-            width: 105px;
-            height: 40px;
-            bottom: 75px;
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-2), #2E7D32);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
-        }
-
-        .tree-layer-3 {
-            width: 90px;
-            height: 35px;
-            bottom: 110px;
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-3), #388E3C);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .tree-layer-4 {
-            width: 75px;
-            height: 30px;
-            bottom: 140px;
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-4), #43A047);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-        }
-
-        .tree-layer-5 {
-            width: 60px;
-            height: 25px;
-            bottom: 165px;
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-5), #4CAF50);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-        }
-
-        .tree-top {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: 8px solid transparent;
-            border-right: 8px solid transparent;
-            border-bottom: 15px solid #2E7D32;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 3;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-        }
-
-        .tree-top.active {
-            opacity: 1;
-            transform: translateY(0);
-            bottom: 195px;
         }
 
         /* Progress Ring */
@@ -1290,121 +1150,7 @@
             text-align: center;
         }
 
-        /* Fullscreen Tree - Optimized for Mobile */
-        .fullscreen-tree-container {
-            position: absolute;
-            width: min(60vw, 60vh);
-            height: min(60vw, 60vh);
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        .fullscreen-tree {
-            position: relative;
-            width: min(40vw, 40vh);
-            height: min(55vw, 55vh);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .fullscreen-trunk {
-            width: min(12px, 2.5vw);
-            height: min(40px, 8vw);
-            background: var(--trunk-color);
-            border-radius: 3px;
-            position: relative;
-            z-index: 1;
-            box-shadow: 
-                inset 2px 0 0 rgba(255, 255, 255, 0.1),
-                inset -2px 0 0 rgba(0, 0, 0, 0.3),
-                0 2px 4px rgba(0, 0, 0, 0.2);
-        }
-
-        .fullscreen-tree-layer {
-            position: absolute;
-            border-radius: 50% 50% 40% 40%;
-            opacity: 0;
-            transform: scale(0);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 2;
-            box-shadow: 
-                inset 0 0 15px rgba(0, 0, 0, 0.3),
-                0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .fullscreen-tree-layer.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .fullscreen-tree-layer-1 {
-            width: min(55vw, 55vh);
-            height: min(20vw, 20vh);
-            bottom: min(40px, 8vw);
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-1), #1B5E20);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
-        }
-
-        .fullscreen-tree-layer-2 {
-            width: min(48vw, 48vh);
-            height: min(18vw, 18vh);
-            bottom: min(70px, 15vw);
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-2), #2E7D32);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.25));
-        }
-
-        .fullscreen-tree-layer-3 {
-            width: min(41vw, 41vh);
-            height: min(16vw, 16vh);
-            bottom: min(95px, 20vw);
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-3), #388E3C);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-        }
-
-        .fullscreen-tree-layer-4 {
-            width: min(34vw, 34vh);
-            height: min(14vw, 14vh);
-            bottom: min(115px, 25vw);
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-4), #43A047);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.15));
-        }
-
-        .fullscreen-tree-layer-5 {
-            width: min(27vw, 27vh);
-            height: min(12vw, 12vh);
-            bottom: min(130px, 28vw);
-            background: radial-gradient(circle at 50% 100%, var(--tree-green-5), #4CAF50);
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-        }
-
-        .fullscreen-tree-top {
-            position: absolute;
-            width: 0;
-            height: 0;
-            border-left: min(8px, 1.7vw) solid transparent;
-            border-right: min(8px, 1.7vw) solid transparent;
-            border-bottom: min(15px, 3.2vw) solid #2E7D32;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: all 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
-            z-index: 3;
-            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
-        }
-
-        .fullscreen-tree-top.active {
-            opacity: 1;
-            transform: translateY(0);
-            bottom: min(150px, 32vw);
-        }
-
+        /* Fullscreen Progress Ring */
         .fullscreen-progress-ring {
             position: absolute;
             top: -4px;
@@ -1624,12 +1370,6 @@
             .time {
                 font-size: 2.5rem;
             }
-            
-            .tree-container {
-                width: 100px;
-                height: 100px;
-                bottom: 25px;
-            }
         }
 
         /* Prevent text size adjustment on mobile */
@@ -1671,12 +1411,6 @@
                     <circle class="fullscreen-progress-ring-bg" cx="254" cy="254" r="250"></circle>
                     <circle class="fullscreen-progress-ring-fill" cx="254" cy="254" r="250"></circle>
                 </svg>
-
-                <div class="fullscreen-tree-container">
-                    <div class="fullscreen-tree" id="fullscreen-tree">
-                        <div class="fullscreen-trunk" id="fullscreen-trunk"></div>
-                    </div>
-                </div>
 
                 <div class="fullscreen-time" id="fullscreen-time-display">25:00</div>
                 <div class="fullscreen-timer-label" id="fullscreen-timer-label">Focus Time</div>
@@ -1742,12 +1476,6 @@
                             <circle class="progress-ring-bg" cx="183" cy="183" r="180"></circle>
                             <circle class="progress-ring-fill" cx="183" cy="183" r="180"></circle>
                         </svg>
-
-                        <div class="tree-container">
-                            <div class="tree" id="tree">
-                                <div class="trunk" id="trunk"></div>
-                            </div>
-                        </div>
 
                         <div class="time" id="time-display">25:00</div>
                         <div class="timer-label" id="timer-label">Focus Time</div>
@@ -1922,7 +1650,6 @@
         let focusTimeToday = 0;
         let breakTimeToday = 0;
         let tasksCompleted = 0;
-        let treeStage = 0;
         let isFullscreen = false;
         
         // Timer settings
@@ -1974,10 +1701,6 @@
         const fullscreenProgressRingFill = document.querySelector('.fullscreen-progress-ring-fill');
         const fullscreenExitBtn = document.getElementById('fullscreen-exit-btn');
         
-        // Tree elements
-        const tree = document.getElementById('tree');
-        const fullscreenTree = document.getElementById('fullscreen-tree');
-        
         // Settings elements
         const focusTimeInput = document.getElementById('focus-time');
         const breakTimeInput = document.getElementById('break-time');
@@ -2010,8 +1733,6 @@
             timeLeft = getCurrentModeDuration();
             updateDisplay();
             updateFullscreenDisplay();
-            updateTree();
-            updateFullscreenTree();
             updatePomodoroCounter();
             updateFullscreenPomodoroCounter();
             updateSessionInfo();
@@ -2087,9 +1808,8 @@
                 updateDisplay();
                 updateFullscreenDisplay();
                 
-                // Update tree growth during focus session
+                // Update focus/break time tracking
                 if (currentMode === 'focus') {
-                    updateTreeGrowth();
                     focusTimeToday++;
                 } else {
                     breakTimeToday++;
@@ -2146,11 +1866,6 @@
             if (currentMode === 'focus') {
                 totalPomodoros++;
                 pomodoroCount++;
-                
-                // Reset tree for next session
-                treeStage = 0;
-                updateTree();
-                updateFullscreenTree();
                 
                 if (pomodoroCount >= sessionsUntilLongBreak) {
                     pomodoroCount = 0;
@@ -2272,88 +1987,6 @@
                 case 'break': return '#3B82F6';
                 case 'longBreak': return '#8B5CF6';
                 default: return '#10B981';
-            }
-        }
-        
-        // ==================== TREE FUNCTIONS ====================
-        function updateTree() {
-            // Clear existing tree layers and top
-            const existingLayers = tree.querySelectorAll('.tree-layer');
-            existingLayers.forEach(layer => layer.remove());
-            
-            const existingTop = tree.querySelector('.tree-top');
-            if (existingTop) existingTop.remove();
-            
-            // Add tree layers based on tree stage
-            for (let i = 1; i <= treeStage; i++) {
-                const layer = document.createElement('div');
-                layer.className = `tree-layer tree-layer-${i}`;
-                tree.appendChild(layer);
-                
-                // Animate layer appearance
-                setTimeout(() => {
-                    layer.classList.add('active');
-                }, i * 200);
-            }
-            
-            // Add tree top if tree has at least 3 layers
-            if (treeStage >= 3) {
-                const treeTop = document.createElement('div');
-                treeTop.className = 'tree-top';
-                tree.appendChild(treeTop);
-                
-                setTimeout(() => {
-                    treeTop.classList.add('active');
-                }, 300);
-            }
-        }
-        
-        function updateFullscreenTree() {
-            // Clear existing tree layers and top
-            const existingLayers = fullscreenTree.querySelectorAll('.fullscreen-tree-layer');
-            existingLayers.forEach(layer => layer.remove());
-            
-            const existingTop = fullscreenTree.querySelector('.fullscreen-tree-top');
-            if (existingTop) existingTop.remove();
-            
-            // Add tree layers based on tree stage
-            for (let i = 1; i <= treeStage; i++) {
-                const layer = document.createElement('div');
-                layer.className = `fullscreen-tree-layer fullscreen-tree-layer-${i}`;
-                fullscreenTree.appendChild(layer);
-                
-                // Animate layer appearance
-                setTimeout(() => {
-                    layer.classList.add('active');
-                }, i * 200);
-            }
-            
-            // Add tree top if tree has at least 3 layers
-            if (treeStage >= 3) {
-                const treeTop = document.createElement('div');
-                treeTop.className = 'fullscreen-tree-top';
-                fullscreenTree.appendChild(treeTop);
-                
-                setTimeout(() => {
-                    treeTop.classList.add('active');
-                }, 300);
-            }
-        }
-        
-        function updateTreeGrowth() {
-            if (currentMode === 'focus') {
-                const totalDuration = getCurrentModeDuration();
-                const timeElapsed = totalDuration - timeLeft;
-                const progress = timeElapsed / totalDuration;
-                
-                // Tree grows from 0 to 5 stages during focus session
-                const newTreeStage = Math.min(5, Math.floor(progress * 6)); // 0-5
-                
-                if (newTreeStage !== treeStage) {
-                    treeStage = newTreeStage;
-                    updateTree();
-                    updateFullscreenTree();
-                }
             }
         }
         
@@ -3019,7 +2652,6 @@
                 breakTimeToday,
                 tasksCompleted,
                 pomodoroCount,
-                treeStage,
                 currentMode,
                 focusTime,
                 breakTime,
@@ -3048,7 +2680,6 @@
                     breakTimeToday = data.breakTimeToday || 0;
                     tasksCompleted = data.tasksCompleted || 0;
                     pomodoroCount = data.pomodoroCount || 0;
-                    treeStage = data.treeStage || 0;
                     currentMode = data.currentMode || 'focus';
                     
                     // Load timer settings
@@ -3106,5 +2737,3 @@
     </script>
 </body>
 </html>
-
-
