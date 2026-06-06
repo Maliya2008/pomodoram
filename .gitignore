@@ -30,14 +30,26 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files — keep .env.example, ignore all others
+.env
+.env.local
+.env.development
+.env.production
+.env.test
 
-# vercel
+# vercel / appwrite
 .vercel
+.appwrite
 
 # typescript
 *.tsbuildinfo
 next-env.d.ts
 
+# prisma generated client
 /src/generated/prisma
+
+# local sqlite database — never commit
+*.db
+*.db-shm
+*.db-wal
+dev.db
