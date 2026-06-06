@@ -21,6 +21,10 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Ensure Prisma client files are bundled into Vercel serverless functions
+  outputFileTracingIncludes: {
+    "/api/**/*": ["./node_modules/@prisma/client/**/*", "./node_modules/.prisma/**/*"],
+  },
   async headers() {
     return [
       {
